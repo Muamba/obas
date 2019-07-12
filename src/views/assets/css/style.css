@@ -13043,7 +13043,7 @@ ul, li {
 }
 
 #Footer .footer-logo-wrap a {
-    color: #0098aa;
+    color: #ffea00;
     outline: 0;
 }
 
@@ -13082,7 +13082,7 @@ ul, li {
 }
 
 #Footer .social-share ul li a:hover .fa-linkedin {
-    color: #0077B5;
+    color: rgb(183, 200, 209);
 }
 
 #Footer .social-share ul li a:hover .fa-instagram {
