@@ -5165,7 +5165,7 @@ fieldset[disabled] .form-control {
 
 .accordions .card .card-header {
     padding: 0;
-    border-bottom: 1px solid #DDDDDD !important;
+   /* border-bottom: 1px solid #DDDDDD !important;*/
 }
 
 .accordions .card .card-header .card-title {
@@ -5778,8 +5778,8 @@ fieldset[disabled] .form-control {
 
 .card .card-header {
     padding: 0 15px 0;
-    background-color: #FFFFFF;
-    border-bottom: none !important;
+    /*background-color: #FFFFFF;*/
+    /*border-bottom: none !important;*/
 }
 
 .card .card-category,

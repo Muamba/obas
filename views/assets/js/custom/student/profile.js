@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    const BASE_URL = "http://localhost:4000/";
+    const BASE_URL = "http://localhost:4000/users/student/profile/";
 
     /** student profile pages starts here**/
     $("#profileForm input").prop("disabled", true);
@@ -33,7 +33,7 @@ $(document).ready(function(){
     });
 
     $("#addressCancelBtn").click(function () {
-        location.href = BASE_URL + "users/student/profile/address";
+        location.href = BASE_URL + "address";
     });
     /** Address ends here**/
 
@@ -48,30 +48,26 @@ $(document).ready(function(){
     });
 
     $("#contactCancelBtn").click(function () {
-        location.href = BASE_URL + "users/student/profile/contacts";
+        location.href = BASE_URL + "contacts";
     });
     /** Contact ends here**/
 
-    /** District starts here **/
-    // $("#provinceForm select").prop("disabled", true);
-    // $("#districtForm select").prop("disabled", true);
-    // $("#townForm select").prop("disabled", true);
-    // $("#townUpdateBtn, #townClearBtn, #townCancelBtn, #districtBtn, #townBtn").hide();
-    // $("#townEditBtn").click(function() {
-    //     $("#provinceForm select").prop("disabled", false);
-    //     $("#districtForm select").prop("disabled", false);
-    //     $("#townForm select").prop("disabled", false);
-    //     $(this).hide();
-    //     $("#townUpdateBtn, #townClearBtn, #townCancelBtn, #districtBtn").show();
-    // });
-    // $("#townCancelBtn").click(function () {
-    //     $("#provinceForm, #districtForm, #townForm").trigger("reset");
-    //     $("#provinceForm select").prop("disabled", true);
-    //     $("#districtForm select").prop("disabled", true);
-    //     $("#townForm select").prop("disabled", true);
-    //     $("#townUpdateBtn, #townClearBtn, #townCancelBtn, #districtBtn, #townBtn").hide();
-    //     $("#townEditBtn").show();
-    // });
+    /** Distict starts here **/
+
+    $("#province").change(function() {
+        const provinceId = $(this).val();
+        let districtElement = $('#district');
+        let townElement = $('#town');
+        getDropDownElement(townElement, 'Town');
+        populateLocationDropDown(districtElement, provinceId);
+    });
+
+    $('#district').change(function() {
+        const districtId = $(this).val();
+        let townElement = $('#town');
+        populateLocationDropDown(townElement, districtId);
+    });
+
     /** District ends here **/
 
     /** student profile ends here**/

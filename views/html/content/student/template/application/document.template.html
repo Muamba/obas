@@ -1,0 +1,258 @@
+{{ define "document" }}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+                <a data-target="#documentInfo" href="#" data-toggle="collapse" class="collapsed greenText" aria-expanded="false">
+                    Document Information
+                    <b class="caret"></b>
+                </a>
+            </h4>
+        </div>
+        <div id="documentInfo" class="card-collapse collapse" style="">
+            <div class="card-body beautify">
+                <ul role="tablist" class="nav nav-tabs">
+                    <li role="presentation" class="nav-item show active" aria-expanded="false">
+                        <a class="nav-link" id="document-tab" href="#document"
+                           data-toggle="tab" >Document</a>
+                    </li>
+                    <!--li class="nav-item">
+                        <a class="nav-link" id="current-course-tab" href="#current-course" data-toggle="tab"
+                           aria-expanded="false">Current Course</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="current-subject-tab" href="#current-subject" data-toggle="tab"
+                           aria-expanded="false">Current Subjects</a>
+                    </li-->
+                </ul>
+                <div class="tab-content">
+                    <div id="document" class="tab-pane fade show active" role="tabpanel"
+                         aria-labelledby="document-tab" aria-expanded="false">
+
+                        <form id="documentForm" enctype="multipart/form-data"
+                              action="/users/student-document-file-upload">
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <label class="control-label label-font-color">Document Type</label>
+                                    <select name="documenttype" class="selectpicker"
+                                            data-style="btn-default btn-outline"
+                                            data-menu-style="dropdown-blue">
+                                        <option value="" disabled selected>Select Document Type</option>
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-4">
+                                    <input type="file" name="file" class="form-control"
+                                           placeholder="Choose Document"
+                                           id="file">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" id="documentUpdateBtn"
+                                            class="btn btn-wd btn-info btn-outline full-width">
+                                             <span class="btn-label">
+                                             </span>Upload
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <hr class="hrcolor">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <div class="bootstrap-table rectagler ">
+                                    <div class="fixed-table-toolbar">
+                                        <div class="bars pull-left">
+                                            <div class="toolbar">
+                                                <!--        Here you can write extra buttons/actions for the toolbar              -->
+                                            </div>
+                                        </div>
+                                        <div class="columns columns-right pull-right">
+                                            <button class="btn btn-outline" type="button" name="toggle" title="Toggle">
+                                                <i
+                                                        class="glyphicon fa fa-th-list"></i></button>
+                                            <div class="keep-open btn-group" title="Columns">
+                                                <button type="button" class="btn btn-outline dropdown-toggle"
+                                                        data-toggle="dropdown"><i class="glyphicon fa fa-columns"></i>
+                                                    <span
+                                                            class="caret"></span></button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><label><input type="checkbox" data-field="id" value="1"
+                                                                      checked="checked"> ID</label></li>
+                                                    <li><label><input type="checkbox" data-field="name" value="2"
+                                                                      checked="checked"> Name</label></li>
+                                                    <li><label><input type="checkbox" data-field="salary" value="3"
+                                                                      checked="checked"> Salary</label></li>
+                                                    <li><label><input type="checkbox" data-field="country" value="4"
+                                                                      checked="checked"> Country</label></li>
+                                                    <li><label><input type="checkbox" data-field="city" value="5"
+                                                                      checked="checked"> City</label></li>
+                                                    <li><label><input type="checkbox" data-field="actions" value="6"
+                                                                      checked="checked"> Actions</label></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="fixed-table-container" style="padding-bottom: 0px;">
+                                        <div class="fixed-table-header" style="display: none;">
+                                            <table></table>
+                                        </div>
+                                        <div class="fixed-table-body">
+                                            <div class="fixed-table-loading" style="top: 41px;">Loading, please
+                                                wait...
+                                            </div>
+                                            <table id="bootstrap-table" class="table table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th class="bs-checkbox " style="width: 36px; " data-field="state">
+                                                        <div class="th-inner "><input name="btSelectAll"
+                                                                                      type="checkbox"></div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th class="text-center" style="" data-field="id">
+                                                        <div class="th-inner ">ID</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th style="" data-field="name">
+                                                        <div class="th-inner sortable both">Name</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th style="" data-field="salary">
+                                                        <div class="th-inner sortable both">Salary</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th style="" data-field="country">
+                                                        <div class="th-inner sortable both">Country</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th style="" data-field="city">
+                                                        <div class="th-inner ">City</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th class="td-actions text-right" style="" data-field="actions">
+                                                        <div class="th-inner ">Actions</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr data-index="16">
+                                                    <td class="bs-checkbox"><input data-index="16" name="btSelectItem"
+                                                                                   type="checkbox"></td>
+                                                    <td class="text-center" style="">17</td>
+                                                    <td style="">Connor Wagner</td>
+                                                    <td style="">$86,537</td>
+                                                    <td style="">Germany</td>
+                                                    <td style="">Solihull</td>
+                                                    <td class="td-actions text-right" style=""><a rel="tooltip"
+                                                                                                  title="View"
+                                                                                                  class="btn btn-link btn-info table-action view"
+                                                                                                  href="javascript:void(0)"><i
+                                                                    class="fa fa-image"></i></a><a rel="tooltip"
+                                                                                                   title="Edit"
+                                                                                                   class="btn btn-link btn-warning table-action edit"
+                                                                                                   href="javascript:void(0)"><i
+                                                                    class="fa fa-edit"></i></a><a rel="tooltip"
+                                                                                                  title="Remove"
+                                                                                                  class="btn btn-link btn-danger table-action remove"
+                                                                                                  href="javascript:void(0)"><i
+                                                                    class="fa fa-remove"></i></a></td>
+                                                </tr>
+                                                <tr data-index="17">
+                                                    <td class="bs-checkbox"><input data-index="17" name="btSelectItem"
+                                                                                   type="checkbox"></td>
+                                                    <td class="text-center" style="">18</td>
+                                                    <td style="">Boris Horton</td>
+                                                    <td style="">$35,094</td>
+                                                    <td style="">Laos</td>
+                                                    <td style="">Saint-Mard</td>
+                                                    <td class="td-actions text-right" style=""><a rel="tooltip"
+                                                                                                  title="View"
+                                                                                                  class="btn btn-link btn-info table-action view"
+                                                                                                  href="javascript:void(0)"><i
+                                                                    class="fa fa-image"></i></a><a rel="tooltip"
+                                                                                                   title="Edit"
+                                                                                                   class="btn btn-link btn-warning table-action edit"
+                                                                                                   href="javascript:void(0)"><i
+                                                                    class="fa fa-edit"></i></a><a rel="tooltip"
+                                                                                                  title="Remove"
+                                                                                                  class="btn btn-link btn-danger table-action remove"
+                                                                                                  href="javascript:void(0)"><i
+                                                                    class="fa fa-remove"></i></a></td>
+                                                </tr>
+                                                <tr data-index="18">
+                                                    <td class="bs-checkbox"><input data-index="18" name="btSelectItem"
+                                                                                   type="checkbox"></td>
+                                                    <td class="text-center" style="">19</td>
+                                                    <td style="">Winifred Ryan</td>
+                                                    <td style="">$64,436</td>
+                                                    <td style="">Ireland</td>
+                                                    <td style="">Ronciglione</td>
+                                                    <td class="td-actions text-right" style=""><a rel="tooltip"
+                                                                                                  title="View"
+                                                                                                  class="btn btn-link btn-info table-action view"
+                                                                                                  href="javascript:void(0)"><i
+                                                                    class="fa fa-image"></i></a><a rel="tooltip"
+                                                                                                   title="Edit"
+                                                                                                   class="btn btn-link btn-warning table-action edit"
+                                                                                                   href="javascript:void(0)"><i
+                                                                    class="fa fa-edit"></i></a><a rel="tooltip"
+                                                                                                  title="Remove"
+                                                                                                  class="btn btn-link btn-danger table-action remove"
+                                                                                                  href="javascript:void(0)"><i
+                                                                    class="fa fa-remove"></i></a></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="fixed-table-footer" style="display: none;">
+                                            <table>
+                                                <tbody>
+                                                <tr></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="fixed-table-pagination">
+                                            <div class="pull-left pagination-detail"><span
+                                                        class="pagination-info"></span><span
+                                                        class="page-list"><span class="btn-group dropup"><button
+                                                                type="button"
+                                                                class="btn btn-outline  dropdown-toggle"
+                                                                data-toggle="dropdown"><span
+                                                                    class="page-size">8</span> <span
+                                                                    class="caret"></span></button><ul
+                                                                class="dropdown-menu"
+                                                                role="menu"><li
+                                                                    class="active"><a
+                                                                        href="javascript:void(0)">8</a></li><li><a
+                                                                        href="javascript:void(0)">10</a></li><li><a
+                                                                        href="javascript:void(0)">25</a></li></ul></span> rows visible</span>
+                                            </div>
+                                            <div class="pull-right pagination">
+                                                <ul class="pagination">
+                                                    <li class="page-first"><a href="javascript:void(0)">«</a></li>
+                                                    <li class="page-pre"><a href="javascript:void(0)">‹</a></li>
+                                                    <li class="page-number"><a href="javascript:void(0)">1</a></li>
+                                                    <li class="page-number"><a href="javascript:void(0)">2</a></li>
+                                                    <li class="page-number active"><a href="javascript:void(0)">3</a>
+                                                    </li>
+                                                    <li class="page-next disabled"><a href="javascript:void(0)">›</a>
+                                                    </li>
+                                                    <li class="page-last disabled"><a href="javascript:void(0)">»</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="current-subject" class="tab-pane fade" role="tabpanel" aria-labelledby="current-subject-tab"
+                         aria-expanded="false">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{ end }}

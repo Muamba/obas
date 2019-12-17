@@ -1,0 +1,57 @@
+
+.green {
+    background-color: #006837;!important;
+}
+.greenText{
+   color: #006837;!important;!important;
+
+}
+
+.cardx{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color:#006837 ;!important;
+}
+.beautify{
+    /**background-color: #935900;**/
+    background-color: #002f35;
+    border: #FFFFFF 2px;
+}
+
+.yelowColor{
+    background-color: #ffea00;
+}
+.rectagler{
+    background-color:#FFFFFF;
+    border-radius: 2%;
+    box-shadow: #6c757d;
+}
+.hrcolor{
+    background-color: #FFFFFF;!important;
+    border-top: 1px solid rgba(255,255,255);
+}
+.yelowText{
+    color: #ffea00; !important;
+}
+#current-institution-tab.active {
+     background-color: #FFFFFF;!important;
+ }
+a.hover {
+    background-color: #ffa323;!important;
+}
+#current-subject-tab.active{
+    background-color: #FFFFFF;!important;
+}
+#current-course-tab.active{
+    background-color: #FFFFFF;!important;
+}
+
+
+#prospective-institution-tab.active{
+    background-color: #FFFFFF;!important;
+}
+#prospective-course-tab.active{
+    background-color: #FFFFFF;!important;
+}
+
+

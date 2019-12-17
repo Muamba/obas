@@ -1,0 +1,81 @@
+{{ define "prospective-institution-form" }}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+                <a data-target="#prospectiveInstitutionInfo" href="#" data-toggle="collapse" class="collapsed" aria-expanded="false">
+                    Prospective Institution Information
+                    <b class="caret"></b>
+                </a>
+            </h4>
+        </div>
+        <div id="prospectiveInstitutionInfo" class="card-collapse collapse" style="">
+            <div class="card-body beautify">
+                <ul role="tablist" class="nav nav-tabs">
+                    <li role="presentation" class="nav-item show active" aria-expanded="false">
+                        <a class="nav-link yelowText" id="prospective-institution-tab" href="#prospective-institution"
+                           data-toggle="tab">Prospective Institution</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link yelowText" id="prospective-course-tab" href="#prospective-course" data-toggle="tab"
+                           aria-expanded="false">Prospective Course</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="prospective-institution" class="tab-pane fade show active" role="tabpanel"
+                         aria-labelledby="prospective-institution-tab" aria-expanded="false">
+                        <form id="prospectiveInstitutionForm" method="post"
+                              action="/users/student/bursary/prospective/institution/update">
+                            {{ template "location-form" .}}
+                            {{ template "institution-form" .}}
+                            <div class="row justify-content-center">
+                                <div class="col-md-10">
+                                    <button type="reset" id="clearButton"
+                                            class="btn btn-wd btn-danger btn-outline pull-left">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-times"></i>
+                                                    </span>
+                                        Clear
+                                    </button>
+                                    <button type="submit" id="updateButton"
+                                            class="btn btn-wd btn-info btn-outline pull-right">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-exclamation"></i>
+                                                    </span>
+                                        Update
+                                    </button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="prospective-course" class="tab-pane fade" role="tabpanel"
+                         aria-labelledby="prospective-course-tab" aria-expanded="false">
+                        <form id="prospectiveCourseForm" method="post"
+                              action="/users/student/bursary/prospective/course/update">
+                            {{ template "institution-course" .}}
+                            <div class="row justify-content-center">
+                                <div class="col-md-10">
+                                    <button type="reset" id="clearButton"
+                                            class="btn btn-wd btn-danger btn-outline pull-left">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-times"></i>
+                                                    </span>
+                                        Clear
+                                    </button>
+                                    <button type="submit" id="updateButton"
+                                            class="btn btn-wd btn-info btn-outline pull-right">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-exclamation"></i>
+                                                    </span>
+                                        Update
+                                    </button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{ end }}

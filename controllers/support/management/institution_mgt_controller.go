@@ -7,7 +7,9 @@ import (
 	"net/http"
 	"obas/config"
 	institutionDomain "obas/domain/institutions"
+	locationDomain "obas/domain/location"
 	institutionIO "obas/io/institutions"
+	"obas/util"
 )
 
 func InstitutionManagement(app *config.Env) http.Handler {
@@ -104,6 +106,7 @@ func InstitutionManagementHandler(app *config.Env) http.HandlerFunc {
 
 		var institutions []institutionDomain.Institution
 		var institutionsHolder []InstitutionHolder
+
 		institutionTypes, err := institutionIO.GetInstitutionTypes()
 		if err != nil {
 			app.ErrorLog.Println(err.Error())
@@ -118,17 +121,21 @@ func InstitutionManagementHandler(app *config.Env) http.HandlerFunc {
 				}
 			}
 		}
+		provinces, _ := util.GetProvinces()
 
 		type PageData struct {
 			InstitutionTypes   []institutionDomain.InstitutionTypes
 			InstitutionsHolder []InstitutionHolder
+			Provinces          []locationDomain.Location
 		}
 
-		data := PageData{institutionTypes, institutionsHolder}
+		data := PageData{institutionTypes, institutionsHolder, provinces}
 
 		files := []string{
 			app.Path + "content/tech/tech_admin_institution.html",
 			app.Path + "content/tech/template/sidebar.template.html",
+			app.Path + "base/template/form/location-form.template.html",
+			app.Path + "base/template/form/institution-form.template.html",
 			app.Path + "base/template/footer.template.html",
 		}
 		ts, err := template.ParseFiles(files...)

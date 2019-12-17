@@ -34,14 +34,17 @@ func GetInstitutionType(id string) (domain.InstitutionTypes, error) {
 }
 func GetInstitutionTypes() ([]domain.InstitutionTypes, error) {
 	entity := []domain.InstitutionTypes{}
-	resp, _ := api.Rest().Get(institutionTypeURL + "all")
-	if resp.IsError() {
-		return entity, errors.New(resp.Status())
-	}
-	err := api.JSON.Unmarshal(resp.Body(), &entity)
-	if err != nil {
-		return entity, errors.New(resp.Status())
-	}
+	entity = append(entity, domain.InstitutionTypes{"1", "University", ""})
+	entity = append(entity, domain.InstitutionTypes{"2", "College", ""})
+	entity = append(entity, domain.InstitutionTypes{"3", "High School", ""})
+	//resp, _ := api.Rest().Get(institutionTypeURL + "all")
+	//if resp.IsError() {
+	//	return entity, errors.New(resp.Status())
+	//}
+	//err := api.JSON.Unmarshal(resp.Body(), &entity)
+	//if err != nil {
+	//	return entity, errors.New(resp.Status())
+	//}
 	return entity, nil
 }
 func DeleteInstitutionType(obj domain.InstitutionTypes) (bool, error) {

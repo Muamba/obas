@@ -142,47 +142,10 @@
                                 <br>Locations</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link  waves-light " id="users-table-tab" data-toggle="tab"
-                               href="#country-table"
-                               role="tab" aria-controls="users-table" aria-selected="true">
-                                <div style="text-align: center;"><i class="fas fa-globe fa " aria-hidden="true"></i>
-                                </div>
-                                <br>Country</a>
-                        </li>
-
-
-                        <li class="nav-item">
-                            <a class="nav-link waves-light" id="location-tab" data-toggle="tab"
-                               href="#province-table"
-                               role="tab" aria-controls="roles" aria-selected="false">
-                                <div style="text-align: center;"><i class="fas fa-globe fa" aria-hidden="true"></i>
-                                </div>
-                                <br>Provinces </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link waves-light" id="institution-tab" data-toggle="tab"
-                               href="#district-table"
-                               role="tab" aria-controls="roles" aria-selected="false">
-                                <div style="text-align: center;"><i class="fas fa-university fa" aria-hidden="true"></i>
-                                </div>
-                                <br>District </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link waves-light" id="subject-tab" data-toggle="tab"
-                               href="#town-table"
-                               role="tab" aria-controls="roles" aria-selected="false">
-                                <div style="text-align: center;"><i class="fas fa-book fa"
-                                                                    aria-hidden="true"></i></div>
-                                <br>Towns </a>
-                        </li>
-
                     </ul>
 
                     <div class="tab-content card" id="rolesTabContent">
-                        <div class="tab-pane fade active show" id="loctype-table" role="tabpanel"
+                        <div class="tab-pane fade {{.Tab1}}" id="loctype-table" role="tabpanel"
                              aria-labelledby="pool-roles">
                             <p></p>
                             <!-- Table with panel -->
@@ -254,7 +217,7 @@
                             <!-- Table with panel -->
                         </div>
 
-                        <div class="tab-pane fade" id="location-table" role="tabpanel"
+                        <div class="tab-pane fade {{.Tab2}}" id="location-table" role="tabpanel"
                              aria-labelledby="roles">
                             <p></p>
 
@@ -275,19 +238,19 @@
                                             <div class="row justify-content-center">
                                                 <div class="col-md-5">
                                                     <label class="control-label label-font-color">Latitude</label>
-                                                    <input type="text" name="latitude" class="form-control"
+                                                    <input type="text" name="Latitude" class="form-control"
                                                            placeholder="" id="">
                                                 </div>
                                                 <div class="col-md-5">
                                                     <label class="control-label label-font-color">Longitude</label>
-                                                    <input type="text" name="longitude" class="form-control"
+                                                    <input type="text" name="Longitude" class="form-control"
                                                            placeholder="" id="">
                                                 </div>
                                             </div>
                                             <div class="row justify-content-center">
                                                 <div class="col-md-5">
                                                     <label class="control-label label-font-color">Location Type</label>
-                                                    <select name="locationType" class="selectpicker"
+                                                    <select name="LocationType" class="selectpicker"
                                                             data-style="btn-default btn-outline"
                                                             data-menu-style="dropdown-blue">
                                                         <option value="" disabled selected>Select Location Type
@@ -302,7 +265,7 @@
                                                 <div class="col-md-5">
                                                     <label class="control-label label-font-color">Location
                                                         Parent</label>
-                                                    <select name="locationParent" class="selectpicker"
+                                                    <select name="LocationParent" class="selectpicker"
                                                             data-style="btn-default btn-outline"
                                                             data-menu-style="dropdown-blue">
                                                         <option value="" disabled selected>Select Location
@@ -333,8 +296,6 @@
                                             </div>
                                         </form>
                                     </div>
-
-
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="card strpied-tabled-with-hover">
@@ -344,7 +305,7 @@
                                                         <th>Location Name</th>
                                                         <th>Longitude</th>
                                                         <th>Latitude</th>
-                                                        <th>Actions</th>
+                                                        <th class="text-center">Actions</th>
                                                         </thead>
                                                         <tbody>
                                                         {{ with .Locations }}
@@ -354,12 +315,19 @@
                                                                     <td>{{ .Longitude }}</td>
                                                                     <td>{{ .Latitude }}</td>
                                                                     <td>
-                                                                        <a class="edit" title="Edit"
-                                                                           data-toggle="tooltip"><i
-                                                                                    class="material-icons">&#xE254;</i></a>
-                                                                        <a class="delete" title="Delete"
-                                                                           data-toggle="tooltip"><i
-                                                                                    class="material-icons">&#xE872;</i></a>
+                                                                        <div class="row justify-content-center">
+                                                                            <div class="col-md-6">
+                                                                                <a class="edit" title="Edit"
+                                                                                   data-toggle="modal" data-target="#editModal" href=""
+                                                                                   onclick="editLocationForm({{.}})"><i
+                                                                                            class="material-icons">&#xE254;</i></a>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <a class="delete" href="/support/management/location/delete/location/{{.LocationId}}" title="Delete"
+                                                                                   data-toggle="tooltip"><i
+                                                                                            class="material-icons">&#xE872;</i></a>
+                                                                            </div>
+                                                                        </div>
                                                                     </td>
                                                                 </tr>
                                                             {{ end }}
@@ -375,329 +343,94 @@
                             <!-- Table with panel -->
                         </div>
 
-
-                        <div class="tab-pane fade" id="country-table" role="tabpanel"
-                             aria-labelledby="pool-roles">
-                            <p></p>
-                            <!-- Table with panel -->
-                            <div class="content">
-                                <div class="container-fluid">
-
-                                    <div class="card green">
-                                        <form id="" method="post" action="#">
-
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <label class="control-label label-font-color"> country</label>
-                                                    <input type="text" name="provinces" class="form-control"
-                                                           placeholder="" id="">
-                                                </div>
-
-
-                                            </div>
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <button type="submit" id="documentUpdateBtn"
-                                                            class="btn btn-wd btn-info btn-outline full-width">
-                                             <span class="btn-label">
-                                             </span>Upload
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
+                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel"> Edit Location</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
+                                    <div class="modal-body">
+                                        <!-- Extended material form grid -->
+                                        <form name="locationEditForm" method="POST"
+                                              action="/support/management/location/type/edit" novalidate>
+
+                                            <input type="hidden" class="form-control" name="LocationId" id="locationId">
 
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="card strpied-tabled-with-hover">
-                                                <div class="card-body table-full-width table-responsive">
+                                            <div class="form-row">
+                                                <!-- Default input -->
+                                                <div class="form-group col-md-12">
+                                                    <label for="Name">Institution name</label>
+                                                    <input type="text" class="form-control" name="Name" id="Name">
 
-                                                    <table class="table table-hover table-striped">
-                                                        <thead>
-                                                        <th>#</th>
-                                                        <th>Country</th>
-                                                        <th>Actions</th>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Dakota Rice</td>
-                                                            <td>
-                                                                <a class="edit" title="Edit" data-toggle="tooltip"><i
-                                                                            class="material-icons">&#xE254;</i></a>
-                                                                <a class="delete" title="Delete"
-                                                                   data-toggle="tooltip"><i
-                                                                            class="material-icons">&#xE872;</i></a>
-                                                            </td>
-                                                        </tr>
-
-                                                        </tbody>
-                                                    </table>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Table with panel -->
-                        </div>
+                                            <div class="form-row">
+                                                <!-- Default input -->
+                                                <div class="form-group col-md-6">
+                                                    <label for="Description">Institution description</label>
+                                                    <input type="text" class="form-control" name="Latitude"
+                                                           id="Latitude">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="Description">Institution description</label>
+                                                    <input type="text" class="form-control" name="Longitude"
+                                                           id="Longitude">
 
-
-                        <div class="tab-pane fade" id="province-table" role="tabpanel"
-                             aria-labelledby="roles">
-                            <p></p>
-
-                            <!-- Table with panel -->
-                            <div class="content">
-                                <div class="container-fluid">
-
-                                    <div class="card green">
-                                        <form id="" method="post"
-                                              action="#">
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <label class="control-label label-font-color">Countries</label>
-                                                    <select name="documenttype" class="selectpicker"
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <!-- Default input -->
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label label-font-color">Location Type</label>
+                                                    <select name="locationType" class="selectpicker"
                                                             data-style="btn-default btn-outline"
                                                             data-menu-style="dropdown-blue">
-                                                        <option value="" disabled selected>Select the country Type
+                                                        <option value="" disabled selected>Select Location Type
                                                         </option>
-                                                        <option value=></option>
-
+                                                        {{with .LocationTypes}}
+                                                            {{range .}}
+                                                                <option value={{ .LocationTypeId }}>{{ .Name }}</option>
+                                                            {{end}}
+                                                        {{end}}
                                                     </select>
                                                 </div>
-                                            </div>
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <label class="control-label label-font-color">Enter Province</label>
-
-                                                    <input type="text" name="provinces" class="form-control"
-                                                           placeholder=""
-                                                           id="">
-                                                </div>
-                                            </div>
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <button type="submit" id="documentUpdateBtn"
-                                                            class="btn btn-wd btn-info btn-outline full-width">
-                                             <span class="btn-label">
-                                             </span>Upload
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="card strpied-tabled-with-hover">
-                                                <div class="card-body table-full-width table-responsive">
-                                                    <table class="table table-hover table-striped">
-                                                        <thead>
-                                                        <th>#</th>
-                                                        <th>Country</th>
-                                                        <th>Province</th>
-                                                        <th>Actions</th>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Dakota Rice</td>
-                                                            <td>$36,738</td>
-                                                            <td>
-                                                                <a class="edit" title="Edit" data-toggle="tooltip"><i
-                                                                            class="material-icons">&#xE254;</i></a>
-                                                                <a class="delete" title="Delete"
-                                                                   data-toggle="tooltip"><i
-                                                                            class="material-icons">&#xE872;</i></a>
-                                                            </td>
-                                                        </tr>
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Table with panel -->
-                        </div>
-
-                        <div class="tab-pane fade" id="district-table" role="tabpanel"
-                             aria-labelledby="roles">
-                            <p></p>
-
-                            <!-- Table with panel -->
-                            <div class="content">
-                                <div class="container-fluid">
-
-                                    <div class="card green">
-                                        <form id="" method="post"
-                                              action="#">
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <label class="control-label label-font-color">Province</label>
-                                                    <select name="documenttype" class="selectpicker"
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label label-font-color">Location
+                                                        Parent</label>
+                                                    <select name="locationParent" class="selectpicker"
                                                             data-style="btn-default btn-outline"
                                                             data-menu-style="dropdown-blue">
-                                                        <option value="" disabled selected>Select the Provinces</option>
-                                                        <option value=></option>
+                                                        <option value="" disabled selected>Select Location
+                                                        </option>
+                                                        {{with .Locations}}
+                                                            {{range .}}
+                                                                <option value={{ .LocationId }}>{{ .Name }}</option>
+                                                            {{end}}
+                                                        {{end}}
 
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <label class="control-label label-font-color">Enter District</label>
 
-                                                    <input type="text" name="provinces" class="form-control"
-                                                           placeholder=""
-                                                           id="">
-
-                                                </div>
-                                            </div>
-
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <button type="submit" id="documentUpdateBtn"
-                                                            class="btn btn-wd btn-info btn-outline full-width">
-                                             <span class="btn-label">
-                                             </span>Upload
-                                                    </button>
-                                                </div>
+                                            <!-- Grid row -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <button type="submit" class="btn btn-primary">Save</button>
                                             </div>
                                         </form>
+
                                     </div>
 
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="card strpied-tabled-with-hover">
-                                                <div class="card-body table-full-width table-responsive">
-
-                                                    <table class="table table-hover table-striped">
-                                                        <thead>
-                                                        <th>#</th>
-                                                        <th>Province</th>
-                                                        <th>District</th>
-                                                        <th>Actions</th>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Dakota Rice</td>
-                                                            <td>$36,738</td>
-
-                                                            <td>
-                                                                <a class="edit" title="Edit" data-toggle="tooltip"><i
-                                                                            class="material-icons">&#xE254;</i></a>
-                                                                <a class="delete" title="Delete"
-                                                                   data-toggle="tooltip"><i
-                                                                            class="material-icons">&#xE872;</i></a>
-                                                            </td>
-                                                        </tr>
-
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
-                            <!-- Table with panel -->
-                        </div>
-
-                        <div class="tab-pane fade" id="town-table" role="tabpanel"
-                             aria-labelledby="roles">
-                            <p></p>
-
-                            <!-- Table with panel -->
-                            <div class="content">
-                                <div class="container-fluid">
-
-                                    <div class="card green">
-                                        <form id="" method="post"
-                                              action="#">
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <label class="control-label label-font-color">Districts</label>
-                                                    <select name="documenttype" class="selectpicker"
-                                                            data-style="btn-default btn-outline"
-                                                            data-menu-style="dropdown-blue">
-                                                        <option value="" disabled selected>Select the Districts</option>
-                                                        <option value=></option>
-
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <label class="control-label label-font-color">Please enter
-                                                        Town</label>
-
-                                                    <input type="text" name="provinces" class="form-control"
-                                                           placeholder=""
-                                                           id="">
-
-                                                </div>
-                                            </div>
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6">
-                                                    <button type="submit" id="documentUpdateBtn"
-                                                            class="btn btn-wd btn-info btn-outline full-width">
-                                             <span class="btn-label">
-                                             </span>Upload
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="card strpied-tabled-with-hover">
-                                                <div class="card-body table-full-width table-responsive">
-
-                                                    <table class="table table-hover table-striped">
-                                                        <thead>
-                                                        <th>#</th>
-                                                        <th>Province</th>
-                                                        <th>District</th>
-                                                        <th>Town</th>
-                                                        <th>Actions</th>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Dakota Rice</td>
-                                                            <td>$36,738</td>
-                                                            <td>Niger</td>
-
-                                                            <td>
-                                                                <a class="edit" title="Edit" data-toggle="tooltip"><i
-                                                                            class="material-icons">&#xE254;</i></a>
-                                                                <a class="delete" title="Delete"
-                                                                   data-toggle="tooltip"><i
-                                                                            class="material-icons">&#xE872;</i></a>
-                                                            </td>
-                                                        </tr>
-
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Table with panel -->
                         </div>
 
                     </div>
@@ -755,6 +488,8 @@
 <script src="../../../assets/js/light-bootstrap-dashboard.js?v=2.0.1" type="text/javascript"></script>
 <!-- Light Dashboard DEMO methods, don't include it in your project! -->
 <script src="../../../assets/js/demo.js"></script>
+<script src="../../../assets/js/custom/techadmin/institution.js"></script>
+
 
 </html>
 <script type="text/javascript">
@@ -762,7 +497,6 @@
         // Javascript method's body can be found in assets/js/demos.js
         demo.initDashboardPageCharts();
 
-        demo.showNotification();
 
         demo.initVectorMap();
 

@@ -1,0 +1,25 @@
+{{ define "institution-form" }}
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <label class="control-label label-font-color">Institution Type</label>
+            <select name="institutionType" class="obas-select obas-select-inner-text" id="institutionType"
+                    data-style="btn-default btn-outline"
+                    data-menu-style="dropdown-blue">
+                <option value="" disabled selected>Select Institution Type</option>
+                {{ with .InstitutionTypes }}
+                    {{ range .}}
+                        <option value="{{ .Id }}" >{{ .Name }}</option>
+                    {{ end }}
+                {{ end }}
+            </select>
+        </div>
+        <div class="col-md-5">
+            <label class="control-label label-font-color">Institution</label>
+            <select name="institution" class="obas-select obas-select-inner-text" id="institution"
+                    data-style="btn-default btn-outline"
+                    data-menu-style="dropdown-blue">
+                <option value="" disabled selected>Select Institution</option>
+            </select>
+        </div>
+    </div>
+{{ end }}

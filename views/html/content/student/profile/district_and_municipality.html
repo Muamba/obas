@@ -18,7 +18,7 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <!--link href="../../../assets/css/demo.css" rel="stylesheet"/-->
     <link rel="stylesheet" href="../../../../assets/css/style.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="../../../../assets/css/custom/profile.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../../../../assets/css/custom/student/profile.css" rel="stylesheet"/>
 </head>
 
 <body>
@@ -146,128 +146,79 @@
                             </ul>
                         </div>
                         <div class="tab-content">
-
                             <div class="tab-pane fade show active " id="district-logo" role="tabpanel"
                                  aria-labelledby="info-tab">
                                 <div class="card green">
                                     <div class="card-body">
-                                        <form id="provinceForm" method="post"
-                                              action="/users/student/profile/demographics/districts">
-                                            <!-- <h4 style="color: #ffffff" class="text-center">District Municipality</h4>-->
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-3">
-                                                    <label class="control-label"
-                                                           style="color: #ffffff">Province</label>
-                                                    <select name="province" class="selectpicker"
-                                                            data-style="btn-default btn-outline"
-                                                            data-menu-style="dropdown-blue">
-                                                        <option value="" disabled selected>Select Province</option>
-                                                        {{with .Provinces}}
-                                                            {{range .}}
-                                                                <option value="{{ .ProvinceCode }}" {{ if eq $.SelectedProvince.ProvinceCode .ProvinceCode }} selected {{end}} >{{ .ProvinceName }}</option>
-                                                            {{end}}
-                                                        {{end}}
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label class="control-label"
-                                                           style="color: #ffffff">&nbsp;</label>
-                                                    <button class="btn btn-dark bootstrap-select"
-                                                            type="submit">Get Districts
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <form id="districtForm" method="post"
-                                              action="/users/student/profile/demographics/towns">
-                                            <!-- <h4 style="color: #ffffff" class="text-center">District Municipality</h4>-->
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-3">
-                                                    <input type="hidden" name="province"
-                                                           value="{{ $.SelectedProvince.ProvinceCode }}"/>
-                                                    <label class="control-label"
-                                                           style="color: #ffffff">District</label>
-                                                    <select name="district" class="selectpicker"
-                                                            data-style="btn-default btn-outline"
-                                                            data-menu-style="dropdown-blue">
-                                                        <option value="" disabled selected>Select District</option>
-                                                        {{with .Districts}}
-                                                            {{range .}}
-                                                                <option value="{{ .DistrictCode }}" {{ if eq $.SelectedDistrict.DistrictCode .DistrictCode }} selected {{end}} >{{ .DistrictName }}</option>
-                                                            {{end}}
-                                                        {{end}}
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    {{ if .Districts}}
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-6">
                                                         <label class="control-label"
-                                                               style="color: #ffffff">&nbsp;</label>
-                                                        <button class="btn btn-dark bootstrap-select"
-                                                                type="submit">Get Towns
-                                                        </button>
-                                                    {{ end}}
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <form id="profileForm" method="post" action="/users/student-profile-town-update">
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-5">
-                                                    <div class="form-group">
-                                                        <label class="control-label"
-                                                               style="color: #ffffff">Town</label>
-                                                        <select name="town" class="selectpicker"
+                                                               style="color: #ffffff">Province</label>
+                                                        <select name="province" class="selectpicker" id="province"
                                                                 data-style="btn-default btn-outline"
                                                                 data-menu-style="dropdown-blue">
-                                                            <option value="" disabled selected>Select Town</option>
-                                                            {{with .Towns}}
+                                                            <option value="" disabled selected>Select Province</option>
+                                                            {{with .Provinces}}
                                                                 {{range .}}
-                                                                    <option value="{{ .TownCode }}" {{ if eq $.SelectedTown.TownCode .TownCode }} selected {{ end }}>{{ .TownName }}</option>
+                                                                    <option value="{{ .LocationId }}">{{ .Name }}</option>
                                                                 {{end}}
                                                             {{end}}
                                                         </select>
                                                     </div>
+                                                    <div class="col-md-6">
+                                                        <label class="control-label"
+                                                               style="color: #ffffff">District</label>
+                                                        <select name="district" class="" id="district"
+                                                                data-style="btn-default btn-outline"
+                                                                data-menu-style="dropdown-blue">
+                                                            <option value="" disabled selected>Select District</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <form id="townForm" method="post"
+                                                      action="/users/student-profile-town-update">
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-md-9">
+                                                            <label class="control-label"
+                                                                   style="color: #ffffff">Town</label>
+                                                            <select name="town" class="" required id="town"
+                                                                    data-style="btn-default btn-outline"
+                                                                    data-menu-style="dropdown-blue">
+                                                                <option value="" disabled selected>Select Town</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="control-label"
+                                                                   style="color: #ffffff">&nbsp;</label>
+                                                            <button type="submit"
+                                                                    class="btn btn-wd btn-info btn-outline bootstrap-select">
+                                                                    <span class="btn-label">
+                                                                        <i class="fa fa-exclamation"></i>
+                                                                    </span>
+                                                                Update
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="card ">
+                                                    <div class="card-footer ">
+                                                        {{ .TownName }}
+                                                        <hr>
+                                                        <div class="stats">
+                                                            <i class="fa fa-cog"></i>Your Town
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                            <div class="row justify-content-center">
-                                                <button type="button" id="editButton"
-                                                        class="btn btn-wd btn-warning btn-outline">
-                                                    <span class="btn-label">
-                                                        <i class="fa fa-warning"></i>
-                                                    </span>
-                                                    Edit
-                                                </button>
-                                                <button type="submit" id="updateButton"
-                                                        class="btn btn-wd btn-info btn-outline">
-                                                    <span class="btn-label">
-                                                        <i class="fa fa-exclamation"></i>
-                                                    </span>
-                                                    Update
-                                                </button>
-                                                <button type="reset" id="clearButton"
-                                                        class="btn btn-wd btn-danger btn-outline">
-                                                        <span class="btn-label">
-                                                            <i class="fa fa-times"></i>
-                                                        </span>
-                                                    Clear
-                                                </button>
-                                                <button type="button" id="cancelButton"
-                                                        class="btn btn-wd btn-outline">
-                                                    <span class="btn-label">
-                                                        <i class="fa fa-arrow-left"></i>
-                                                    </span>
-                                                    Cancel
-                                                </button>
-
-                                                <div class="clearfix"></div>
-                                            </div>
-
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -426,6 +377,7 @@
 <script src="../../../../assets/js/light-bootstrap-dashboard.js?v=2.0.1" type="text/javascript"></script>
 <!-- Light Dashboard DEMO methods, don't include it in your project! >
 <script src="../../../assets/js/demo.js"></script-->
-<script src="../../../../assets/js/custom/profile.js" type="text/javascript"></script>
+<script src="../../../../assets/js/custom/generics.js" type="text/javascript"></script>
+<script src="../../../../assets/js/custom/student/profile.js" type="text/javascript"></script>
 
 </html>

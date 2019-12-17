@@ -7,6 +7,8 @@ import (
 	"testing"
 )
 
+var token = "eyJraWQiOiJURVNUX1BIUkFTRSIsImFsZyI6IkVTMjU2In0.eyJpc3MiOiJIQVNIQ09ERS5aTSIsImF1ZCI6IlNJVEVVU0VSUyIsImV4cCI6MTU3NjE1NTIxOSwianRpIjoiMkhkT0NyRmM0SHVkZXVyeURmSHZsZyIsImlhdCI6MTU3NjA2ODgxOSwibmJmIjoxNTc2MDY4Njk5LCJzdWIiOiJTaXRlIEFjY2VzcyIsImVtYWlsIjoiZXNwb2lyZGl0ZWtlbWVuYUBnbWFpbC5jb20iLCJyb2xlIjoiU1RSMDAxIn0.3SoiDBLI-ubU7ArWjPuMKh36aVAA6Cm0HfVdnP_ta3pMmGVCdFXEYHw1WMP_lNJS7MUPZlNp9ISfQWhqThhPcQ"
+
 func TestGetDocumentTypes(t *testing.T) {
 	value, err := GetDocumentTypes()
 	assert.Nil(t, err)
@@ -23,8 +25,9 @@ func TestGetDocumentsType(t *testing.T) {
 }
 
 func TestCreateDocumentTypes(t *testing.T) {
-	docType := domain.DocumentType{"2", "COURSES"}
-	value, err := CreateDocument(docType)
+	//docType := domain.DocumentType{"2", "COURSES"}
+	docType := DocumentType{"2", "COURSES"}
+	value, err := CreateDocument(docType, token)
 	assert.Nil(t, err)
 	assert.True(t, value)
 }

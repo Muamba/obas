@@ -8,9 +8,7 @@ import (
 
 const userTownURL = api.BASE_URL + "/users/town"
 
-type UserTown domain.UserTown
-
-func CreateUserTown(entity UserTown) (bool, error) {
+func CreateUserTown(entity domain.UserTown) (bool, error) {
 	resp, _ := api.Rest().
 		SetBody(entity).
 		Post(userTownURL + "/create")
@@ -20,9 +18,9 @@ func CreateUserTown(entity UserTown) (bool, error) {
 	return true, nil
 }
 
-func ReadUserTown(userId string) (UserTown, error) {
-	entity := UserTown{}
-	//entity = UserTown{userId, "1"}
+func GetUserTown(userId string) (domain.UserTown, error) {
+	entity := domain.UserTown{}
+	//entity = domain.UserTown{userId, "6"}
 	resp, _ := api.Rest().Get(userTownURL + "/get/" + userId)
 	if resp.IsError() {
 		return entity, errors.New(resp.Status())
@@ -34,7 +32,7 @@ func ReadUserTown(userId string) (UserTown, error) {
 	return entity, nil
 }
 
-func UpdateUserTown(entity UserTown, token string) (bool, error) {
+func UpdateUserTown(entity domain.UserTown, token string) (bool, error) {
 	resp, _ := api.Rest().
 		SetAuthToken(token).
 		SetBody(entity).

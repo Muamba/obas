@@ -154,7 +154,7 @@ sup {
 a {
     color: #007bff;
     text-decoration: none;
-    background-color: transparent;
+    background-color: transparent;!important;
     -webkit-text-decoration-skip: objects
 }
 
@@ -162,6 +162,7 @@ a:hover {
     color: #0056b3;
     text-decoration: underline
 }
+
 
 a:not([href]):not([tabindex]) {
     color: inherit;
@@ -12816,10 +12817,11 @@ ul, li {
 .green {
     background-color: #006837;
 }
-.rectagler{
- background-color:#FFFFFF;
 
-}
+
+
+
+
 
 .full-width {
     width: 100%;
@@ -12831,6 +12833,10 @@ ul, li {
 }
 .table-wrapper-scroll-y {
     display: block;
+}
+
+.margin-top-5 {
+    margin-top: 5px;
 }
 /** custom style ends here */
 

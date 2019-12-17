@@ -18,7 +18,8 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="../../../../assets/css/demo.css" rel="stylesheet"/>
     <link rel="stylesheet" href="../../../../assets/css/style.css" rel="stylesheet"/>
-
+    <link rel="stylesheet" href="../../../../assets/css/custom/student/application.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../../../../assets/css/custom/generic.css" rel="stylesheet" />
 
 </head>
 
@@ -196,57 +197,16 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card green">
-                            <div class="card-header">
-                                <h4 class="card-title">Collapsible Accordion</h4>
-                                <p class="card-category">Bootstrap default style</p>
+                            <div class="card-header green" style="background-color:#006837 ">
+                                <h4 class="card-title" style="color: #FFFFFF">Application Details</h4>
+                                <!--p class="card-category">Bootstrap default style</p-->
                             </div>
                             <div class="card-body">
                                 <div class="accordions" id="accordion">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4 class="card-title">
-                                                <a data-target="#collapseOne" href="#" data-toggle="collapse" class="collapsed" aria-expanded="false">
-                                                    Collapse item 1
-                                                    <b class="caret"></b>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseOne" class="card-collapse collapse" style="">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4 class="card-title">
-                                                <a data-target="#collapseTwo" href="#" data-toggle="collapse">
-                                                    Collapse item 2
-                                                    <b class="caret"></b>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseTwo" class="card-collapse collapse">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4 class="card-title">
-                                                <a data-target="#collapseThree" href="#" data-toggle="collapse">
-                                                    Collapse item 3
-                                                    <b class="caret"></b>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseThree" class="card-collapse collapse">
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{ template "matric-form" .}}
+                                    {{ template "current-institution-form" .}}
+                                    {{ template "document" .}}
+                                    {{ template "prospective-institution-form" .}}
                                 </div>
                             </div>
                         </div>
@@ -409,18 +369,7 @@
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="../../../../assets/js/light-bootstrap-dashboard.js?v=2.0.1" type="text/javascript"></script>
 <!-- Light Dashboard DEMO methods, don't include it in your project! -->
-<script src="../../../../assets/js/demo.js"></script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        // Javascript method's body can be found in assets/js/demos.js
-        demo.initDashboardPageCharts();
-
-        demo.initLBDWizard();
-
-        demo.initVectorMap();
-
-    });
-</script>
+<script src="../../../../assets/js/custom/generics.js"></script>
+<script src="../../../../assets/js/custom/student/application.js"></script>
 
 </html>

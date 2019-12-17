@@ -27,7 +27,7 @@ func TestCreateLocationType(t *testing.T) {
 	value, err := CreateLocationType(locType)
 	assert.Nil(t, err)
 	fmt.Println(" The Results", value)
-	assert.True(t, value)
+	assert.NotNil(t, value)
 }
 
 func TestUpdateLocationType(t *testing.T) {

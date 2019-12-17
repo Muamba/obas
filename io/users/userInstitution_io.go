@@ -6,13 +6,11 @@ import (
 	domain "obas/domain/users"
 )
 
-const userIntUrl = api.BASE_URL + "/users"
+const userInstitutionURL = api.BASE_URL + "/users/institution/"
 
-type UsersInt domain.UserInstitution
-
-func GetUserIntstitutions() ([]UsersInt, error) {
-	entites := []UsersInt{}
-	resp, _ := api.Rest().Get(userIntUrl + "/institution/all")
+func GetUserInstitutions() ([]domain.UserInstitution, error) {
+	entites := []domain.UserInstitution{}
+	resp, _ := api.Rest().Get(userInstitutionURL + "/institution/all")
 
 	if resp.IsError() {
 		return entites, errors.New(resp.Status())
@@ -24,9 +22,9 @@ func GetUserIntstitutions() ([]UsersInt, error) {
 	return entites, nil
 }
 
-func GetUserIntstitution(id string) (UsersInt, error) {
-	entity := UsersInt{}
-	resp, _ := api.Rest().Get(userIntUrl + "/institution/get/" + id)
+func GetUserInstitution(id string) (domain.UserInstitution, error) {
+	entity := domain.UserInstitution{}
+	resp, _ := api.Rest().Get(userInstitutionURL + "/institution/get/" + id)
 	if resp.IsError() {
 		return entity, errors.New(resp.Status())
 	}
@@ -37,10 +35,24 @@ func GetUserIntstitution(id string) (UsersInt, error) {
 	return entity, nil
 }
 
-func CreateUserIntstitution(entity interface{}) (bool, error) {
+func CreateUserInstitution(entity domain.UserInstitution) (domain.UserInstitution, error) {
 	resp, _ := api.Rest().
 		SetBody(entity).
-		Post(userIntUrl + "/institution/create")
+		Post(userInstitutionURL + "create")
+	if resp.IsError() {
+		return entity, errors.New(resp.Status())
+	}
+	err := api.JSON.Unmarshal(resp.Body(), &entity)
+	if err != nil {
+		return entity, errors.New(resp.Status())
+	}
+	return entity, nil
+}
+
+func UpdateUserInstitution(entity interface{}) (bool, error) {
+	resp, _ := api.Rest().
+		SetBody(entity).
+		Post(userInstitutionURL + "/institution/update")
 	if resp.IsError() {
 		return false, errors.New(resp.Status())
 	}
@@ -48,21 +60,10 @@ func CreateUserIntstitution(entity interface{}) (bool, error) {
 	return true, nil
 }
 
-func UpdateUserIntstitution(entity interface{}) (bool, error) {
+func DeleteUserInstitution(entity interface{}) (bool, error) {
 	resp, _ := api.Rest().
 		SetBody(entity).
-		Post(userIntUrl + "/institution/update")
-	if resp.IsError() {
-		return false, errors.New(resp.Status())
-	}
-
-	return true, nil
-}
-
-func DeleteUserIntstitution(entity interface{}) (bool, error) {
-	resp, _ := api.Rest().
-		SetBody(entity).
-		Post(userIntUrl + "/institution/delete")
+		Post(userInstitutionURL + "/institution/delete")
 	if resp.IsError() {
 		return false, errors.New(resp.Status())
 	}

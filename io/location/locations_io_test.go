@@ -26,7 +26,7 @@ func TestCreateSchool(t *testing.T) {
 	loc := domain.Location{}
 	value, err := CreateLocation(loc)
 	assert.Nil(t, err)
-	assert.True(t, value)
+	assert.NotNil(t, value)
 }
 
 func TestUpdateDocument(t *testing.T) {
@@ -42,4 +42,10 @@ func TestDeleteDocument(t *testing.T) {
 	value, err := DeleteLocation(loc)
 	assert.Nil(t, err)
 	assert.True(t, value)
+}
+func TestGetTowns(t *testing.T) {
+	value, err := GetTowns("loc")
+	assert.Nil(t, err)
+	fmt.Println(" The Results", value)
+	assert.NotNil(t, value)
 }

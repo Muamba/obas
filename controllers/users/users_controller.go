@@ -8,11 +8,15 @@ import (
 	"net/http"
 	"obas/config"
 	applicationDomain "obas/domain/application"
+	institutionDomain "obas/domain/institutions"
+	locationDomain "obas/domain/location"
 	userDomain "obas/domain/users"
 	addressIO "obas/io/address"
 	applicationIO "obas/io/applications"
-	demograhpyIO "obas/io/demographics"
+	demographyIO "obas/io/demographics"
 	documentIO "obas/io/documents"
+	institutionIO "obas/io/institutions"
+	locationIO "obas/io/location"
 	loginIO "obas/io/login"
 	storageIO "obas/io/storage"
 	usersIO "obas/io/users"
@@ -46,16 +50,12 @@ type ContactPlaceHolder struct {
 }
 
 type DistrictData struct {
-	Student          usersIO.User
-	Provinces        []demograhpyIO.Province
-	Districts        []demograhpyIO.District
-	Towns            []demograhpyIO.Town
-	SelectedProvince demograhpyIO.Province
-	SelectedDistrict demograhpyIO.District
-	SelectedTown     demograhpyIO.Town
-	Alert            PageToast
-	Menu             string
-	SubMenu          string
+	Student   usersIO.User
+	Provinces []locationDomain.Location
+	TownName  string
+	Alert     PageToast
+	Menu      string
+	SubMenu   string
 }
 
 func Users(app *config.Env) http.Handler {
@@ -89,15 +89,49 @@ func Users(app *config.Env) http.Handler {
 	r.Post("/student-profile-password-update", StudentProfilePasswordUpdate(app))
 	r.Post("/student/profile/contact/contacttype", StudentProfileContactTypeHandler(app))
 	r.Post("/student-profile-contact-update", StudentProfileContactUpdateHandler(app))
-	r.Post("/student/profile/demographics/districts", StudentProfileDistrictsHandler(app))
-	r.Post("/student/profile/demographics/towns", StudentProfileTownsHandler(app))
 	r.Post("/student-profile-town-update", StudentProfileTownUpdateHandler(app))
 	r.Post("/student-document-file-upload", StudentDocumentsUploadHandler(app))
 
 	r.Get("/student/bursary/application", StudentBursaryApplicationHandler(app))
 	r.Post("/student/bursary/application/start", StudentBursaryApplicationStartHandler(app))
+	r.Post("/student/bursary/application/institution/matric/update", StudentBursaryApplicationMatricHandler(app))
 
 	return r
+}
+
+func StudentBursaryApplicationMatricHandler(app *config.Env) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		email := app.Session.GetString(r.Context(), "userId")
+		token := app.Session.GetString(r.Context(), "token")
+		if email == "" || token == "" {
+			http.Redirect(w, r, "/login", 301)
+			return
+		}
+		user, err := usersIO.GetUser(email)
+		if err != nil {
+			app.ErrorLog.Println(err.Error())
+			http.Redirect(w, r, "/login", 301)
+			return
+		}
+
+		failureMessage := "Matric Instutition NOT saved!"
+		successMessage := "Matric Institution saved!"
+
+		r.ParseForm()
+		institution := r.PostFormValue("institution")
+		userInstitution := userDomain.UserInstitution{user.Email, institution, 0, false}
+		app.InfoLog.Println("User (matric) institution to save: ", userInstitution)
+
+		saved, err := usersIO.CreateUserInstitution(userInstitution)
+		if err != nil {
+			app.ErrorLog.Println(err.Error())
+			setSessionMessage(app, r, dangerAlertStyle, failureMessage)
+		} else {
+			setSessionMessage(app, r, successAlertStyle, successMessage)
+		}
+		app.InfoLog.Println("application response is ", saved)
+		http.Redirect(w, r, "/users/student/bursary/application", 301)
+	}
 }
 
 func StudentBursaryApplicationHandler(app *config.Env) http.HandlerFunc {
@@ -120,6 +154,8 @@ func StudentBursaryApplicationHandler(app *config.Env) http.HandlerFunc {
 		var applicationTypes []applicationDomain.ApplicationType
 		var applicantType []applicationDomain.ApplicantType
 		var latestUserApplication userDomain.UserApplication
+		var provinces []locationDomain.Location
+		var institutionTypes []institutionDomain.InstitutionTypes
 		isComplete := true
 		latestUserApplication, err = usersIO.GetLatestUserApplication(email)
 		fmt.Println("user application>>>", latestUserApplication)
@@ -148,12 +184,24 @@ func StudentBursaryApplicationHandler(app *config.Env) http.HandlerFunc {
 					}
 				}
 			} else {
-				message := app.Session.GetString(r.Context(), "message")
-				messageType := app.Session.GetString(r.Context(), "message-type")
-				if message != "" && messageType != "" {
-					alert = PageToast{messageType, message}
-					app.Session.Remove(r.Context(), "message")
-					app.Session.Remove(r.Context(), "message-type")
+				provinces, err = util.GetProvinces()
+				if err != nil {
+					app.ErrorLog.Println(err.Error())
+					alert = PageToast{dangerAlertStyle, "Could not retrieve provinces!"}
+				} else {
+					institutionTypes, err = institutionIO.GetInstitutionTypes()
+					if err != nil {
+						app.ErrorLog.Println(err.Error())
+						alert = PageToast{dangerAlertStyle, "Could not retrieve institution types!"}
+					} else {
+						message := app.Session.GetString(r.Context(), "message")
+						messageType := app.Session.GetString(r.Context(), "message-type")
+						if message != "" && messageType != "" {
+							alert = PageToast{messageType, message}
+							app.Session.Remove(r.Context(), "message")
+							app.Session.Remove(r.Context(), "message-type")
+						}
+					}
 				}
 			}
 		}
@@ -166,13 +214,23 @@ func StudentBursaryApplicationHandler(app *config.Env) http.HandlerFunc {
 			ApplicationTypes  []applicationDomain.ApplicationType
 			Applicants        []applicationDomain.ApplicantType
 			IsComplete        bool
+			Provinces         []locationDomain.Location
+			InstitutionTypes  []institutionDomain.InstitutionTypes
 			Alert             PageToast
 		}
 
-		data := PageData{user, "bursary", "application", latestUserApplication, applicationTypes, applicantType, isComplete, alert}
+		data := PageData{user, "bursary", "application", latestUserApplication, applicationTypes, applicantType, isComplete, provinces, institutionTypes, alert}
 		files := []string{
 			app.Path + "content/student/bursary/application.html",
 			app.Path + "content/student/template/sidebar.template.html",
+			app.Path + "content/student/template/application/matric-form.template.html",
+			app.Path + "content/student/template/application/current-institution-form.template.html",
+			app.Path + "base/template/form/institution-form.template.html",
+			app.Path + "base/template/form/location-form.template.html",
+			app.Path + "content/student/template/application/prospective-institution-form.template.html",
+			app.Path + "content/student/template/application/institution-course.template.html",
+			app.Path + "content/student/template/application/document.template.html",
+			app.Path + "content/student/template/application/subject-form.template.html",
 			app.Path + "base/template/footer.template.html",
 		}
 		ts, err := template.ParseFiles(files...)
@@ -213,7 +271,7 @@ func StudentBursaryApplicationStartHandler(app *config.Env) http.HandlerFunc {
 		applicantTypeId := r.PostFormValue("applicantType")
 
 		fmt.Println(applicationTypeId, "<<<<<< applicationTypeId and applicantTypeId>>>>>>>>", applicantTypeId)
-		if applicationTypeId != "" || applicantTypeId != "" {
+		if applicationTypeId != "" && applicantTypeId != "" {
 			fmt.Println("we are checking the applicationTypeId and applicantTypeId")
 			application := applicationDomain.Application{"", applicationTypeId, applicantTypeId, "", ""}
 			newApplication, err = applicationIO.CreateApplication(application)
@@ -242,7 +300,7 @@ func StudentBursaryApplicationStartHandler(app *config.Env) http.HandlerFunc {
 								}
 							}
 							if statusId != "" {
-								userApplicationStatus := applicationIO.ApplicationStatus{newApplication.Id, statusId, user.Email, "Starting Application", time.Now(),}
+								userApplicationStatus := applicationIO.ApplicationStatus{newApplication.Id, statusId, user.Email, "Starting Application", time.Now()}
 								_, err = applicationIO.CreateApplicationStatus(userApplicationStatus)
 								if err != nil {
 									app.ErrorLog.Println(err.Error() + " ~ User Application Status NOT created!")
@@ -268,7 +326,6 @@ func StudentBursaryApplicationStartHandler(app *config.Env) http.HandlerFunc {
 		}
 		app.InfoLog.Println("application response is ", isSuccessful)
 		http.Redirect(w, r, "/users/student/bursary/application", 301)
-
 	}
 }
 
@@ -492,7 +549,7 @@ func StudentProfileTownUpdateHandler(app *config.Env) http.HandlerFunc {
 		}
 		r.ParseForm()
 		townCode := r.PostFormValue("town")
-		userTown := usersIO.UserTown{email, townCode}
+		userTown := userDomain.UserTown{email, townCode}
 		app.InfoLog.Println("UserTown to update: ", userTown)
 		updated, err := usersIO.UpdateUserTown(userTown, token)
 		successMessage := "User town updated!"
@@ -512,77 +569,8 @@ func StudentProfileTownUpdateHandler(app *config.Env) http.HandlerFunc {
 	}
 }
 
-func StudentProfileTownsHandler(app *config.Env) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		email := app.Session.GetString(r.Context(), "userId")
-		if email == "" || len(email) <= 0 {
-			http.Redirect(w, r, "/login", 301)
-			return
-		}
-		user, err := usersIO.GetUser(email)
-		if err != nil {
-			app.ErrorLog.Println(err.Error())
-			http.Redirect(w, r, "/login", 301)
-			return
-		}
-		var alert PageToast
-		var districts []demograhpyIO.District
-		var selectedProvince demograhpyIO.Province
-		var towns []demograhpyIO.Town
-		var selectedDistrict demograhpyIO.District
-		var selectedTown demograhpyIO.Town
-
-		provinces, err := demograhpyIO.GetProvinces()
-		if err != nil {
-			app.ErrorLog.Println(err.Error())
-			alert = PageToast{dangerAlertStyle, "Could not retrieve provinces!"}
-		} else {
-			r.ParseForm()
-			provinceCode := r.PostFormValue("province")
-			districtCode := r.PostFormValue("district")
-			districtsInProvince, errorAlert := getDistrictsInProvince(app, provinceCode)
-			if errorAlert.AlertInfo != "" {
-				alert = errorAlert
-			} else {
-				districts = districtsInProvince
-				townsInDistrict, errorAlert := getTownsInDistrict(app, districtCode)
-				if errorAlert.AlertInfo != "" {
-					alert = errorAlert
-				} else {
-					towns = townsInDistrict
-				}
-			}
-			selectedProvince = filterProvince(provinces, provinceCode)
-			selectedDistrict = filterDistrict(districts, districtCode)
-		}
-
-		data := DistrictData{
-			user,
-			provinces,
-			districts,
-			towns,
-			selectedProvince,
-			selectedDistrict,
-			selectedTown,
-			alert, "profile", "districts"}
-
-		files := []string{
-			app.Path + "content/student/profile/district_and_municipality.html",
-		}
-		ts, err := template.ParseFiles(files...)
-		if err != nil {
-			app.ErrorLog.Println(err.Error())
-			return
-		}
-		err = ts.Execute(w, data)
-		if err != nil {
-			app.ErrorLog.Println(err.Error())
-		}
-	}
-}
-
-func filterDistrict(districts []demograhpyIO.District, districtCode string) demograhpyIO.District {
-	var retdata demograhpyIO.District
+func filterDistrict(districts []demographyIO.District, districtCode string) demographyIO.District {
+	var retdata demographyIO.District
 	for _, district := range districts {
 		if district.DistrictCode == districtCode {
 			retdata = district
@@ -592,17 +580,17 @@ func filterDistrict(districts []demograhpyIO.District, districtCode string) demo
 	return retdata
 }
 
-func getTownsInDistrict(app *config.Env, districtCode string) ([]demograhpyIO.Town, PageToast) {
-	var towns []demograhpyIO.Town
+func getTownsInDistrict(app *config.Env, districtCode string) ([]demographyIO.Town, PageToast) {
+	var towns []demographyIO.Town
 	var alert PageToast
-	townsInDistrict, err := demograhpyIO.GetTownsInDistrict(districtCode)
+	townsInDistrict, err := demographyIO.GetTownsInDistrict(districtCode)
 	if err != nil {
 		app.ErrorLog.Println(err.Error())
 		alert = PageToast{dangerAlertStyle, "Could not retrieve towns in district!"}
 		return towns, alert
 	}
 	for _, districtTown := range townsInDistrict {
-		town, err := demograhpyIO.GetTown(districtTown.TownCode)
+		town, err := demographyIO.GetTown(districtTown.TownCode)
 		if err != nil {
 			app.ErrorLog.Println(err.Error())
 		} else {
@@ -612,68 +600,8 @@ func getTownsInDistrict(app *config.Env, districtCode string) ([]demograhpyIO.To
 	return towns, alert
 }
 
-func StudentProfileDistrictsHandler(app *config.Env) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		email := app.Session.GetString(r.Context(), "userId")
-		if email == "" || len(email) <= 0 {
-			http.Redirect(w, r, "/login", 301)
-			return
-		}
-		user, err := usersIO.GetUser(email)
-		if err != nil {
-			app.ErrorLog.Println(err.Error())
-			http.Redirect(w, r, "/login", 301)
-			return
-		}
-		var alert PageToast
-		var districts []demograhpyIO.District
-		var selectedProvince demograhpyIO.Province
-		var towns []demograhpyIO.Town
-		var selectedDistrict demograhpyIO.District
-		var selectedTown demograhpyIO.Town
-
-		provinces, err := demograhpyIO.GetProvinces()
-		if err != nil {
-			app.ErrorLog.Println(err.Error())
-			alert = PageToast{dangerAlertStyle, "Could not retrieve provinces!"}
-		} else {
-			r.ParseForm()
-			provinceCode := r.PostFormValue("province")
-			districtsInProvince, errorAlert := getDistrictsInProvince(app, provinceCode)
-			if errorAlert.AlertInfo != "" {
-				alert = errorAlert
-			} else {
-				districts = districtsInProvince
-			}
-			selectedProvince = filterProvince(provinces, provinceCode)
-		}
-
-		data := DistrictData{
-			user,
-			provinces,
-			districts,
-			towns,
-			selectedProvince,
-			selectedDistrict,
-			selectedTown,
-			alert, "profile", "districts"}
-		files := []string{
-			app.Path + "content/student/profile/district_and_municipality.html",
-		}
-		ts, err := template.ParseFiles(files...)
-		if err != nil {
-			app.ErrorLog.Println(err.Error())
-			return
-		}
-		err = ts.Execute(w, data)
-		if err != nil {
-			app.ErrorLog.Println(err.Error())
-		}
-	}
-}
-
-func filterProvince(provinces []demograhpyIO.Province, provinceCode string) demograhpyIO.Province {
-	var retdata demograhpyIO.Province
+func filterProvince(provinces []demographyIO.Province, provinceCode string) demographyIO.Province {
+	var retdata demographyIO.Province
 	for _, province := range provinces {
 		if province.ProvinceCode == provinceCode {
 			retdata = province
@@ -683,17 +611,17 @@ func filterProvince(provinces []demograhpyIO.Province, provinceCode string) demo
 	return retdata
 }
 
-func getDistrictsInProvince(app *config.Env, provinceCode string) ([]demograhpyIO.District, PageToast) {
-	var districts []demograhpyIO.District
+func getDistrictsInProvince(app *config.Env, provinceCode string) ([]demographyIO.District, PageToast) {
+	var districts []demographyIO.District
 	var alert PageToast
-	districtsInProvince, err := demograhpyIO.GetDistrictsInProvince(provinceCode)
+	districtsInProvince, err := demographyIO.GetDistrictsInProvince(provinceCode)
 	if err != nil {
 		app.ErrorLog.Println(err.Error())
 		alert = PageToast{dangerAlertStyle, "Could not retrieve districts in province!"}
 		return districts, alert
 	}
 	for _, provinceDistrict := range districtsInProvince {
-		district, err := demograhpyIO.GetDistrict(provinceDistrict.DistrictCode)
+		district, err := demographyIO.GetDistrict(provinceDistrict.DistrictCode)
 		if err != nil {
 			app.ErrorLog.Println(err.Error())
 		} else {
@@ -719,59 +647,42 @@ func StudentProfileDistrictHandler(app *config.Env) http.HandlerFunc {
 		}
 
 		var alert PageToast
-		var selectedProvince demograhpyIO.Province
-		var districts []demograhpyIO.District
-		var towns []demograhpyIO.Town
-		var selectedDistrict demograhpyIO.District
-		var selectedTown demograhpyIO.Town
+		var provinces []locationDomain.Location
+		var townName string
 
-		provinces, err := demograhpyIO.GetProvinces()
+		provinces, err = util.GetProvinces()
 		if err != nil {
 			app.ErrorLog.Println(err.Error())
 			alert = PageToast{dangerAlertStyle, "Could not retrieve provinces!"}
 		} else {
-			userTown, err := usersIO.ReadUserTown(email)
+			userTown, err := usersIO.GetUserTown(email)
 			if err != nil {
 				app.ErrorLog.Println(err.Error())
 				alert = PageToast{dangerAlertStyle, "Could not retrieve user town!"}
 			} else {
-				districtTown, err := demograhpyIO.GetDistrictForTown(userTown.TownCode)
-				if err != nil {
-					app.ErrorLog.Println(err.Error())
-					alert = PageToast{dangerAlertStyle, "Could not retrieve district for town!"}
-				} else {
-					provinceDistrict, err := demograhpyIO.GetProvinceForDistrict(districtTown.DistrictCode)
+				if userTown.LocationId != "" {
+					location, err := locationIO.GetLocation(userTown.LocationId)
 					if err != nil {
 						app.ErrorLog.Println(err.Error())
-						alert = PageToast{dangerAlertStyle, "Could not retrieve province for district!"}
+						alert = PageToast{dangerAlertStyle, "Could not retrieve location!"}
 					} else {
-						selectedProvince = filterProvince(provinces, provinceDistrict.ProvinceCode)
-						districtsInProvince, errorAlert := getDistrictsInProvince(app, provinceDistrict.ProvinceCode)
-						if errorAlert.AlertInfo != "" {
-							alert = errorAlert
-						} else {
-							districts = districtsInProvince
-							selectedDistrict = filterDistrict(districts, districtTown.DistrictCode)
-							townsInDistrict, errorAlert := getTownsInDistrict(app, districtTown.DistrictCode)
-							if errorAlert.AlertInfo != "" {
-								alert = errorAlert
-							} else {
-								towns = townsInDistrict
-								for _, town := range towns {
-									if town.TownCode == districtTown.TownCode {
-										selectedTown = town
-										break
-									}
-								}
-								message := app.Session.GetString(r.Context(), "message")
-								messageType := app.Session.GetString(r.Context(), "message-type")
-								if message != "" && messageType != "" {
-									alert = PageToast{messageType, message}
-									app.Session.Remove(r.Context(), "message")
-									app.Session.Remove(r.Context(), "message-type")
-								}
-							}
+						townName = location.Name
+						message := app.Session.GetString(r.Context(), "message")
+						messageType := app.Session.GetString(r.Context(), "message-type")
+						if message != "" && messageType != "" {
+							alert = PageToast{messageType, message}
+							app.Session.Remove(r.Context(), "message")
+							app.Session.Remove(r.Context(), "message-type")
 						}
+					}
+				} else {
+					townName = "<<not set>>"
+					message := app.Session.GetString(r.Context(), "message")
+					messageType := app.Session.GetString(r.Context(), "message-type")
+					if message != "" && messageType != "" {
+						alert = PageToast{messageType, message}
+						app.Session.Remove(r.Context(), "message")
+						app.Session.Remove(r.Context(), "message-type")
 					}
 				}
 			}
@@ -780,11 +691,7 @@ func StudentProfileDistrictHandler(app *config.Env) http.HandlerFunc {
 		data := DistrictData{
 			user,
 			provinces,
-			districts,
-			towns,
-			selectedProvince,
-			selectedDistrict,
-			selectedTown,
+			townName,
 			alert, "profile", "districts"}
 
 		files := []string{
@@ -1111,22 +1018,22 @@ func StudentProfileDemographyHandler(app *config.Env) http.HandlerFunc {
 			return
 		}
 		var alert PageToast
-		var genders []demograhpyIO.Gender
-		var races []demograhpyIO.Race
-		var gender demograhpyIO.Gender
-		var race demograhpyIO.Race
-		var title demograhpyIO.Title
-		titles, err := demograhpyIO.GetTitles()
+		var genders []demographyIO.Gender
+		var races []demographyIO.Race
+		var gender demographyIO.Gender
+		var race demographyIO.Race
+		var title demographyIO.Title
+		titles, err := demographyIO.GetTitles()
 		if err != nil {
 			app.ErrorLog.Println(err.Error())
 			alert = PageToast{dangerAlertStyle, "Could not retrieve titles!"}
 		} else {
-			genders, err = demograhpyIO.GetGenders()
+			genders, err = demographyIO.GetGenders()
 			if err != nil {
 				app.ErrorLog.Println(err.Error())
 				alert = PageToast{dangerAlertStyle, "Could not retrieve genders!"}
 			} else {
-				races, err = demograhpyIO.GetRaces()
+				races, err = demographyIO.GetRaces()
 				if err != nil {
 					app.ErrorLog.Println(err.Error())
 					alert = PageToast{dangerAlertStyle, "Could not retrieve races!"}
@@ -1153,13 +1060,13 @@ func StudentProfileDemographyHandler(app *config.Env) http.HandlerFunc {
 
 		type PageData struct {
 			Student       usersIO.User
-			Titles        []demograhpyIO.Title
-			Genders       []demograhpyIO.Gender
-			Races         []demograhpyIO.Race
+			Titles        []demographyIO.Title
+			Genders       []demographyIO.Gender
+			Races         []demographyIO.Race
 			Alert         PageToast
-			StudentTitle  demograhpyIO.Title
-			StudentGender demograhpyIO.Gender
-			StudentRace   demograhpyIO.Race
+			StudentTitle  demographyIO.Title
+			StudentGender demographyIO.Gender
+			StudentRace   demographyIO.Race
 			Menu          string
 			SubMenu       string
 		}
@@ -1193,31 +1100,31 @@ func StudentProfileDemographyHandler(app *config.Env) http.HandlerFunc {
 	}
 }
 
-func getUserRace(demography usersIO.UserDemography, races []demograhpyIO.Race) demograhpyIO.Race {
+func getUserRace(demography usersIO.UserDemography, races []demographyIO.Race) demographyIO.Race {
 	for _, race := range races {
 		if demography.RaceId == race.RaceId {
 			return race
 		}
 	}
-	return demograhpyIO.Race{}
+	return demographyIO.Race{}
 }
 
-func getUserTitle(demography usersIO.UserDemography, titles []demograhpyIO.Title) demograhpyIO.Title {
+func getUserTitle(demography usersIO.UserDemography, titles []demographyIO.Title) demographyIO.Title {
 	for _, title := range titles {
 		if demography.TitleId == title.TitleId {
 			return title
 		}
 	}
-	return demograhpyIO.Title{}
+	return demographyIO.Title{}
 }
 
-func getUserGender(demography usersIO.UserDemography, genders []demograhpyIO.Gender) demograhpyIO.Gender {
+func getUserGender(demography usersIO.UserDemography, genders []demographyIO.Gender) demographyIO.Gender {
 	for _, gender := range genders {
 		if demography.GenderId == gender.GenderId {
 			return gender
 		}
 	}
-	return demograhpyIO.Gender{}
+	return demographyIO.Gender{}
 }
 
 func StudentProfileRelativeUpdateHandler(app *config.Env) http.HandlerFunc {

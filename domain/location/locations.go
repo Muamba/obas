@@ -6,15 +6,6 @@ type LocationType struct {
 	Code           string `json:"code"`
 }
 
-type AddressType struct {
-	Id   string `json:"Id"`
-	Name string `json:"Name"`
-}
-type ContactType struct {
-	Id   string `json:"Id"`
-	Name string `json:"Name"`
-}
-
 type Location struct {
 	LocationId       string `json:"locationId"`
 	LocationTypeId   string `json:"locationTypeId"`
