@@ -37,9 +37,9 @@ func DeleteInstitution(obj domain.Institution) (domain.Institution, error) {
 func GetInstitution(id string) (domain.Institution, error) {
 	entity := domain.Institution{}
 	//if id == "1" {
-	//	entity = domain.Institution{id, "1", "CPUT"}
+	//	entity = domain.Institution{id, "3", "Sea Point High School"}
 	//} else if id == "2" {
-	//	entity = domain.Institution{id, "1", "UWC"}
+	//	entity = domain.Institution{id, "1", "University of Western Cape"}
 	//} else if id == "3" {
 	//	entity = domain.Institution{id, "1", "Stellenbosch"}
 	//}
@@ -74,7 +74,7 @@ func GetInstitutionsByType(institutionTypeId string) ([]domain.Institution, erro
 
 func GetInstitutions() ([]domain.Institution, error) {
 	entity := []domain.Institution{}
-	//entity = append(entity, domain.Institution{"1", "1", "CPUT"})
+	//entity = append(entity, domain.Institution{"1", "3", "Sea Point High School"})
 	//entity = append(entity, domain.Institution{"2", "1", "UWC"})
 	//entity = append(entity, domain.Institution{"3", "1", "Stellenbosch"})
 	resp, _ := api.Rest().Get(institutionURL + "/all")

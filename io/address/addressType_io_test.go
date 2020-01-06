@@ -27,7 +27,7 @@ func TestGetAddressTypes(t *testing.T) {
 	value, err := GetAddressTypes()
 	assert.Nil(t, err)
 	fmt.Println(" The Results", value)
-	assert.True(t, len(value) > 0)
+	assert.NotNil(t, value)
 }
 
 func TestUpdateAddressType(t *testing.T) {

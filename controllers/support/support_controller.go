@@ -14,6 +14,7 @@ func Support(app *config.Env) http.Handler {
 	mux.Mount("/management/location", management.LocationManagement(app))
 	mux.Mount("/management/institution", management.InstitutionManagement(app))
 	mux.Mount("/management/user", management.UserManagement(app))
+	mux.Mount("/management/academics", management.AcademicManagement(app))
 
 	return mux
 }

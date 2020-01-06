@@ -1,4 +1,4 @@
-package controllers
+package academics
 
 import (
 	"github.com/go-chi/chi"

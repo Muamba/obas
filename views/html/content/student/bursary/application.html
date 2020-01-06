@@ -129,7 +129,7 @@
                 {{ end }}
 
                 {{if .IsComplete}}
-                <div class="row">
+                    <div class="row">
                     <div class="col-md-12">
                         <div class="card green">
                             <div class="card-body">
@@ -160,8 +160,8 @@
                                                 <select  class="selectpicker"
                                                         data-style="btn-default btn-outline"
                                                         data-menu-style="dropdown-blue" name="applicantType">
-                                                    <option value="id" disabled selected>Select Applicant Type</option>
-                                                    {{with .Applicants}}
+                                                    <option value="" disabled selected>Select Applicant Type</option>
+                                                    {{with .ApplicantTypes}}
                                                         {{range .}}
                                                             <option value="{{.Id}}">{{.Name}}</option>
                                                         {{end}}
@@ -194,25 +194,26 @@
                 {{end}}
 
                 {{if not .IsComplete}}
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card green">
-                            <div class="card-header green" style="background-color:#006837 ">
-                                <h4 class="card-title" style="color: #FFFFFF">Application Details</h4>
-                                <!--p class="card-category">Bootstrap default style</p-->
-                            </div>
-                            <div class="card-body">
-                                <div class="accordions" id="accordion">
-                                    {{ template "matric-form" .}}
-                                    {{ template "current-institution-form" .}}
-                                    {{ template "document" .}}
-                                    {{ template "prospective-institution-form" .}}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card green">
+                                <div class="card-header green" style="background-color:#006837 ">
+                                    <h4 class="card-title" style="color: #FFFFFF">Application Details</h4>
+                                    <!--p class="card-category">Bootstrap default style</p-->
+                                </div>
+                                <div class="card-body">
+                                    <div class="accordions" id="accordion">
+                                        {{ template "applicant-type-form" .}}
+                                        {{ template "matric-form" .}}
+                                        {{ template "current-institution-form" .}}
+                                        {{ template "document" .}}
+                                        {{ template "prospective-institution-form" .}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            {{end}}
+                {{end}}
             </div>
         </div>
 

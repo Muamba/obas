@@ -48,13 +48,6 @@ type UserDocument struct {
 	DocumentId string `json:"documentId"`
 }
 
-type UserInstitution struct {
-	UserId        string  `json:"userId"`
-	InstitutionId string  `json:"institutionId"`
-	DebtAmount    float64 `json:"debtAmount"`
-	IsCurrent     bool    `json:"isCurrent"`
-}
-
 type UserPassword struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -78,19 +71,6 @@ type UserRole struct {
 	RoleId string `json:"roleId"`
 }
 
-type UserSubjects struct {
-	UserId        string `json:"userId"`
-	SubjectId     string `json:"subjectId"`
-	Marks         string `json:"marks"`
-	InstitutionId string `json:"institutionId"`
-}
-
-type UserCourse struct {
-	UserId        string `json:"UserId"`
-	CourseId      string `json:"courseId"`
-	InstitutionId string `json:"institutionId"`
-}
-
 type UserApplication struct {
 	UserId        string    `json:"userId"`
 	ApplicationId string    `json:"applicationId"`
@@ -100,4 +80,35 @@ type UserApplication struct {
 type UserTown struct {
 	UserId     string `json:"userId"`
 	LocationId string `json:"locationId"`
+}
+
+type UserMatricInstitution struct {
+	UserId        string `json:"userId"`
+	InstitutionId string `json:"institutionId"`
+}
+
+type UserMatricSubject struct {
+	UserId      string  `json:"userId"`
+	SubjectId   string  `json:"subjectId"`
+	SubjectMark float64 `json:"subjectMark"`
+}
+
+type UserTertiaryInstitution struct {
+	UserId        string  `json:"userId"`
+	ApplicationId string  `json:"applicationId"`
+	InstitutionId string  `json:"institutionId"`
+	DebtAmount    float64 `json:"debtAmount"`
+}
+
+type UserTertiaryCourse struct {
+	UserId        string `json:"userId"`
+	ApplicationId string `json:"applicationId"`
+	CourseId      string `json:"courseId"`
+}
+
+type UserTertiarySubject struct {
+	UserId string `json:"userId"`
+	ApplicationId string `json:"applicationId"`
+	SubjectId string `json:"subjectId"`
+	SubjectMark float64 `json:"subjectMark"`
 }

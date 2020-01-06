@@ -1,0 +1,44 @@
+{{ define "applicant-type-form" }}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+                <a data-target="#applicantTypeInfo" href="#" data-toggle="collapse" class="collapsed" aria-expanded="false">
+                    Applicant Type
+                    <b class="caret"></b>
+                </a>
+            </h4>
+        </div>
+        <div id="applicantTypeInfo" class="card-collapse collapse">
+            <div class="card-body beautify">
+                <form id="applicantTypeForm" method="post"
+                      action="/users/student/bursary/application/type/update">
+                    <div class="row justify-content-center">
+                        <input type="hidden" name="applicationId" value="{{.Application.Id}}"/>
+                        <div class="col-md-5">
+                            <select  class="selectpicker" onchange="checkSelectedApplicantType({{.Application.ApplicantTypeId }})"
+                                     data-style="btn-default btn-outline" id="applicantType"
+                                     data-menu-style="dropdown-blue" name="applicantType">
+                                <option value="" disabled selected>Select Applicant Type</option>
+                                {{with .ApplicantTypes}}
+                                    {{range .}}
+                                        <option value="{{.Id}}" {{ if eq $.Application.ApplicantTypeId .Id}} selected {{end}} >{{.Name}}</option>
+                                    {{end}}
+                                {{end}}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="control-label label-font-color">&nbsp;</label>
+                            <button type="submit" id="updateApplicantTypeBtn"
+                                    class="btn btn-wd btn-info btn-outline">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-exclamation"></i>
+                                                    </span>
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{{ end }}

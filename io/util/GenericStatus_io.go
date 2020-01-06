@@ -11,7 +11,6 @@ const utilStatusURL = api.BASE_URL + "/generics/util/status/"
 func GetStatuses()([]domain.GenericStatus, error) {
 	entites := []domain.GenericStatus{}
 	resp, _ := api.Rest().Get(utilStatusURL + "all")
-
 	if resp.IsError() {
 		return entites, errors.New(resp.Status())
 	}
@@ -35,4 +34,18 @@ func CreateStatus(entity domain.GenericStatus) (domain.GenericStatus, error) {
 		return saved, errors.New(resp.Status())
 	}
 	return saved, nil
+}
+
+func GetIncompleteStatus()(domain.GenericStatus, error) {
+	entity := domain.GenericStatus{}
+	//entity = domain.GenericStatus{"1", "Incomplete", ""}
+	resp, _ := api.Rest().Get(utilStatusURL + "incomplete")
+	if resp.IsError() {
+		return entity, errors.New(resp.Status())
+	}
+	err := api.JSON.Unmarshal(resp.Body(), &entity)
+	if err != nil {
+		return entity, errors.New(err.Error())
+	}
+	return entity, nil
 }

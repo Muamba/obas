@@ -171,19 +171,23 @@
                                                         <th>#</th>
                                                         <th>Name</th>
                                                         <th>SurName</th>
-                                                        <th>Date of birth</th>
-                                                        <th>Roles</th>
+                                                        <th>Email</th>
+                                                        <th>Id</th>
+                                                        <th class="text-center">Action</th>
                                                         </thead>
                                                         <tbody>
+                                                        {{with .Users}}
+                                                        {{range .}}
                                                         <tr>
                                                             <td>1</td>
-                                                            <td>Dakota Rice</td>
-                                                            <td>Dakota Rice</td>
-                                                            <td>Dakota Rice</td>
+                                                            <td>{{.FirstName}}</td>
+                                                            <td>{{.LastName}}</td>
+                                                            <td>{{.Email}}</td>
+                                                            <td>{{.IdNumber}}</td>
                                                             <td>
-                                                                <form>
-                                                                    <div class="row">
-                                                                        <div class="col-md-8">
+                                                                <form method="post" action="/support/management/user/role/update">
+                                                                    <div class="row ">
+                                                                        <div class="col-md-6">
                                                                             <select name="contacttypes"
                                                                                     class="selectpicker"
                                                                                     data-title="Select contact type"
@@ -196,7 +200,7 @@
                                                                                 <option value="">admin</option>
                                                                             </select>
                                                                         </div>
-                                                                        <div class="col-md-4  " style="margin-top: 1%">
+                                                                        <div class="col-md-3" style="margin-top: 1%">
                                                                             <button type="submit" id="documentUpdateBtn"
                                                                                     class="btn btn-wd btn-info btn-outline full-width">
                                                                                 <span class="btn-label"></span>Submit
@@ -206,6 +210,8 @@
                                                                 </form>
                                                             </td>
                                                         </tr>
+                                                        {{end}}
+                                                        {{end}}
                                                         </tbody>
                                                     </table>
                                                 </div>

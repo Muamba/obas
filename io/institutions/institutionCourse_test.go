@@ -22,7 +22,7 @@ func TestDeleteInstitutionCourse(t *testing.T) {
 	assert.Nil(t, err)
 }
 func TestGetInstitutionCourse(t *testing.T) {
-	resp, err := GetInstitutionCourse("0001")
+	resp, err := GetInstitutionCourse("0040")
 	assert.NotNil(t, resp)
 	fmt.Println(" The Results", resp)
 	assert.Nil(t, err)
@@ -34,7 +34,7 @@ func TestGetInstitutionCourses(t *testing.T) {
 	assert.Nil(t, err)
 }
 func TestReadInstitutionCourse(t *testing.T) {
-	resp, err := ReadInstitutionCourse("0001", "0003")
+	resp, err := ReadInstitutionCourse("00012", "0040")
 	assert.NotNil(t, resp)
 	fmt.Println(" The Results", resp)
 	assert.Nil(t, err)

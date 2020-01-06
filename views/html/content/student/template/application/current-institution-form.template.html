@@ -2,7 +2,8 @@
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">
-                <a data-target="#currentInstitutionInfo" href="#" data-toggle="collapse" class="collapsed" aria-expanded="false">
+                <a data-target="#currentInstitutionInfo" href="#" data-toggle="collapse" class="collapsed"
+                   aria-expanded="false">
                     Current Institution Information
                     <b class="caret"></b>
                 </a>
@@ -13,7 +14,7 @@
                 <ul role="tablist" class="nav nav-tabs ">
                     <li role="presentation" class="nav-item show active" aria-expanded="false">
                         <a class="nav-link yelowText " id="current-institution-tab" href="#current-institution"
-                           data-toggle="tab"  >Current Institution</a>
+                           data-toggle="tab">Current Institution</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link yelowText" id="current-course-tab" href="#current-course" data-toggle="tab"
@@ -21,76 +22,137 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link yelowText" id="current-subject-tab" href="#current-subject" data-toggle="tab"
-                           aria-expanded="false" >Current Subjects</a>
+                           aria-expanded="false">Current Subjects</a>
                     </li>
                 </ul>
                 <div class="tab-content">
                     <div id="current-institution" class="tab-pane fade show active" role="tabpanel"
                          aria-labelledby="current-institution-tab" aria-expanded="false">
-                        <form id="currentInstitutionForm" method="post"
-                              action="/users/student/bursary/current/institution/update">
-                            {{ template "location-form" .}}
-                            {{ template "institution-form" .}}
-                            <div class="row justify-content-center">
-                                <div class="col-md-10">
-                                    <label class="control-label label-font-color">Outstanding Debt</label>
-                                    <input class="form-control" type="text" name="debt"
-                                           value="" required="true"
-                                           placeholder="ex: 12000"/>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-md-10">
-                                    <button type="reset" id="clearButton"
-                                            class="btn btn-wd btn-danger btn-outline pull-left">
+                        <div class="row">
+                            <div class="{{ if eq .UserTertiaryInstitution.UserId ""}} col-md-12 {{ else }} col-md-8 {{ end }}">
+                                <form id="currentInstitutionForm" method="post"
+                                      action="/users/student/bursary/application/institution/current/update">
+                                    {{ template "location-form" .}}
+                                    {{ template "institution-form" .}}
+                                    <input type="hidden" name="applicationId" value="{{ .Application.Id }}"/>
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-10">
+                                            <label class="control-label label-font-color">Outstanding Debt</label>
+                                            <input class="form-control" type="text" name="debt" placeholder="1200.86"/>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-10">
+                                            <button type="reset" id="clearButton"
+                                                    class="btn btn-wd btn-danger btn-outline pull-left">
                                                     <span class="btn-label">
                                                         <i class="fa fa-times"></i>
                                                     </span>
-                                        Clear
-                                    </button>
-                                    <button type="submit" id="updateButton"
-                                            class="btn btn-wd btn-info btn-outline pull-right">
+                                                Clear
+                                            </button>
+                                            <button type="submit" id="updateButton"
+                                                    class="btn btn-wd btn-info btn-outline pull-right">
                                                     <span class="btn-label">
                                                         <i class="fa fa-exclamation"></i>
                                                     </span>
-                                        Update
-                                    </button>
-                                </div>
-                                <div class="clearfix"></div>
+                                                Update
+                                            </button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
+                            {{ if .UserTertiaryInstitution.UserId }}
+                                <div class="col-md-4">
+                                    <div class="card ">
+                                        <div class="card-footer ">
+                                            <p>Name: {{ .UserTertiaryInstitutionName }}</p>
+                                            {{ if gt $.UserTertiaryInstitution.DebtAmount 0.00 }}
+                                                <p>Debt Amount: R{{ .UserTertiaryInstitution.DebtAmount }}</p>
+                                            {{ end }}
+                                            <hr>
+                                            <div class="stats">
+                                                <i class="fa fa-cog"></i>Your Current Institution
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{ end }}
+                        </div>
                     </div>
                     <div id="current-course" class="tab-pane fade" role="tabpanel"
                          aria-labelledby="current-course-tab" aria-expanded="false">
                         <form id="currentCourseForm" method="post"
-                              action="/users/student/bursary/current/course/update">
-                            {{ template "institution-course" .}}
+                              action="/users/student/bursary/application/institution/current/course/update">
                             <div class="row justify-content-center">
-                                <div class="col-md-10">
-                                    <button type="reset" id="clearButton"
-                                            class="btn btn-wd btn-danger btn-outline pull-left">
-                                                    <span class="btn-label">
-                                                        <i class="fa fa-times"></i>
-                                                    </span>
-                                        Clear
-                                    </button>
+                                <div class="col-md-5">
+                                    <input type="hidden" name="applicationId" value="{{ .Application.Id }}"/>
+                                    <label class="control-label label-font-color">Course</label>
+                                    <select name="course" class="selectpicker"
+                                            data-style="btn-default btn-outline"
+                                            data-menu-style="dropdown-blue">
+                                        <option value="" disabled selected>Select Course</option>
+                                        {{ with .CurrentTertiaryCourses }}
+                                            {{ range . }}
+                                                <option value="{{ .Id }}">{{ .CourseName }}</option>
+                                            {{ end }}
+                                        {{ end }}
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="control-label label-font-color">&nbsp;</label>
                                     <button type="submit" id="updateButton"
-                                            class="btn btn-wd btn-info btn-outline pull-right">
+                                            class="btn btn-wd btn-info btn-outline bootstrap-select">
                                                     <span class="btn-label">
                                                         <i class="fa fa-exclamation"></i>
                                                     </span>
-                                        Update
+                                        Save
                                     </button>
                                 </div>
+                            </div>
+                            <div class="row justify-content-center">
+
                                 <div class="clearfix"></div>
                             </div>
                         </form>
                     </div>
-                    <div id="current-subject" class="tab-pane fade" role="tabpanel" aria-labelledby="current-subject-tab"
+                    <div id="current-subject" class="tab-pane fade" role="tabpanel"
+                         aria-labelledby="current-subject-tab"
                          aria-expanded="false">
                         <form id="currentSubjectForm" method="post"
-                              action="/users/student/bursary/current/subject/update">
-                            {{ template "subject-form" .}}
+                              action="/users/student/bursary/application/institution/current/subject/update">
+                            <div class="row justify-content-center">
+                                <div class="col-md-5">
+                                    <input type="hidden" name="applicationId" value="{{ .Application.Id }}"/>
+                                    <label class="control-label label-font-color">Subject</label>
+                                    <select name="subject" class="selectpicker"
+                                            data-style="btn-default btn-outline"
+                                            data-menu-style="dropdown-blue">
+                                        <option value="" disabled selected>Select Subject</option>
+                                        {{with .CurrentCourseSubjects}}
+                                            {{range .}}
+                                                <option value="{{.Id}}">{{.Name}}</option>
+                                            {{end}}
+                                        {{end}}
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="control-label label-font-color">Score</label>
+                                    <input class="form-control margin-top-5" type="text" name="score"
+                                           value="" required="true"
+                                           placeholder="ex: 34.8"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="control-label label-font-color">&nbsp;</label>
+                                    <button type="submit" id="updateButton"
+                                            class="btn btn-wd btn-info btn-outline bootstrap-select">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-exclamation"></i>
+                                                    </span>
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                         <hr class="hrcolor">
                         <div class="row justify-content-center">
@@ -113,16 +175,10 @@
                                                             class="caret"></span></button>
                                                 <ul class="dropdown-menu" role="menu">
                                                     <li><label><input type="checkbox" data-field="id" value="1"
-                                                                      checked="checked"> ID</label></li>
+                                                                      checked="checked"> Subject</label></li>
                                                     <li><label><input type="checkbox" data-field="name" value="2"
-                                                                      checked="checked"> Name</label></li>
-                                                    <li><label><input type="checkbox" data-field="salary" value="3"
-                                                                      checked="checked"> Salary</label></li>
-                                                    <li><label><input type="checkbox" data-field="country" value="4"
-                                                                      checked="checked"> Country</label></li>
-                                                    <li><label><input type="checkbox" data-field="city" value="5"
-                                                                      checked="checked"> City</label></li>
-                                                    <li><label><input type="checkbox" data-field="actions" value="6"
+                                                                      checked="checked"> Score</label></li>
+                                                    <li><label><input type="checkbox" data-field="actions" value="3"
                                                                       checked="checked"> Actions</label></li>
                                                 </ul>
                                             </div>
@@ -136,32 +192,15 @@
                                             <div class="fixed-table-loading" style="top: 41px;">Loading, please
                                                 wait...
                                             </div>
-                                            <table id="bootstrap-table" class="table table-hover">
+                                            <table id="bootstrap-table" class="table table-hover rectagler">
                                                 <thead>
                                                 <tr>
-                                                    <th class="bs-checkbox " style="width: 36px; " data-field="state">
-                                                        <div class="th-inner "><input name="btSelectAll"
-                                                                                      type="checkbox"></div>
+                                                    <th style="" data-field="subject">
+                                                        <div class="th-inner sortable both">Subject</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th class="text-center" style="" data-field="id">
-                                                        <div class="th-inner ">ID</div>
-                                                        <div class="fht-cell"></div>
-                                                    </th>
-                                                    <th style="" data-field="name">
-                                                        <div class="th-inner sortable both">Name</div>
-                                                        <div class="fht-cell"></div>
-                                                    </th>
-                                                    <th style="" data-field="salary">
-                                                        <div class="th-inner sortable both">Salary</div>
-                                                        <div class="fht-cell"></div>
-                                                    </th>
-                                                    <th style="" data-field="country">
-                                                        <div class="th-inner sortable both">Country</div>
-                                                        <div class="fht-cell"></div>
-                                                    </th>
-                                                    <th style="" data-field="city">
-                                                        <div class="th-inner ">City</div>
+                                                    <th style="" data-field="score">
+                                                        <div class="th-inner sortable both">Score</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
                                                     <th class="td-actions text-right" style="" data-field="actions">
@@ -171,28 +210,25 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr data-index="16">
-                                                    <td class="bs-checkbox"><input data-index="16" name="btSelectItem"
-                                                                                   type="checkbox"></td>
-                                                    <td class="text-center" style="">17</td>
-                                                    <td style="">Connor Wagner</td>
-                                                    <td style="">$86,537</td>
-                                                    <td style="">Germany</td>
-                                                    <td style="">Solihull</td>
-                                                    <td class="td-actions text-right" style=""><a rel="tooltip"
-                                                                                                  title="View"
-                                                                                                  class="btn btn-link btn-info table-action view"
-                                                                                                  href="javascript:void(0)"><i
-                                                                    class="fa fa-image"></i></a><a rel="tooltip"
-                                                                                                   title="Edit"
-                                                                                                   class="btn btn-link btn-warning table-action edit"
-                                                                                                   href="javascript:void(0)"><i
-                                                                    class="fa fa-edit"></i></a><a rel="tooltip"
-                                                                                                  title="Remove"
-                                                                                                  class="btn btn-link btn-danger table-action remove"
-                                                                                                  href="javascript:void(0)"><i
-                                                                    class="fa fa-remove"></i></a></td>
-                                                </tr>
+                                                {{ range $index, $userTertiarySubject := .UserTertiarySubjects }}
+                                                    <tr data-index="{{ $index }}">
+                                                        <td style="">{{ $userTertiarySubject.SubjectName }}</td>
+                                                        <td style="">{{ $userTertiarySubject.SubjectMark }}</td>
+                                                        <td class="td-actions text-right" style=""><a rel="tooltip"
+                                                                                                      title="View"
+                                                                                                      class="btn btn-link btn-info table-action view"
+                                                                                                      href="javascript:void(0)"><i
+                                                                        class="fa fa-image"></i></a><a rel="tooltip"
+                                                                                                       title="Edit"
+                                                                                                       class="btn btn-link btn-warning table-action edit"
+                                                                                                       href="javascript:void(0)"><i
+                                                                        class="fa fa-edit"></i></a><a rel="tooltip"
+                                                                                                      title="Remove"
+                                                                                                      class="btn btn-link btn-danger table-action remove"
+                                                                                                      href="javascript:void(0)"><i
+                                                                        class="fa fa-remove"></i></a></td>
+                                                    </tr>
+                                                {{ end}}
                                                 </tbody>
                                             </table>
                                         </div>

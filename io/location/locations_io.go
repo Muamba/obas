@@ -108,16 +108,3 @@ func DeleteLocation(entity interface{}) (bool, error) {
 	}
 	return true, nil
 }
-func GetTowns(typeName string) (domain.Location, error) {
-	location := domain.Location{}
-	resp, _ := api.Rest().Get(locationUrl + "/get/type/" + typeName)
-	if resp.IsError() {
-		return location, errors.New(resp.Status())
-	}
-	err := api.JSON.Unmarshal(resp.Body(), &location)
-	if err != nil {
-		return location, errors.New(resp.Status())
-	}
-
-	return location, nil
-}

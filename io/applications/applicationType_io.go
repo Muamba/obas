@@ -2,7 +2,6 @@ package applications
 
 import (
 	"errors"
-	"fmt"
 	"obas/api"
 	domain "obas/domain/application"
 )
@@ -11,14 +10,13 @@ const applicationTypeUrl = api.BASE_URL + "/application"
 
 func GetApplicationTypes() ([]domain.ApplicationType, error) {
 	entites := []domain.ApplicationType{}
+	//entites = append(entites, domain.ApplicationType{"1", "Motsepe Bursary", ""})
 	resp, _ := api.Rest().Get(applicationTypeUrl + "/type/all")
 	if resp.IsError() {
-		fmt.Println(" Is request from Server Okay")
 		return entites, errors.New(resp.Status())
 	}
 	err := api.JSON.Unmarshal(resp.Body(), &entites)
 	if err != nil {
-		fmt.Println("Did Json Coversion Take Place Okay", err)
 		return entites, errors.New(resp.Status())
 	}
 	return entites, nil
@@ -56,6 +54,7 @@ func UpdateApplicationType(entity interface{}) (bool, error) {
 	}
 	return true, nil
 }
+
 func DeleteApplicationType(entity interface{}) (bool, error) {
 	resp, _ := api.Rest().
 		SetBody(entity).

@@ -28,7 +28,13 @@ func TestDeleteInstitution(t *testing.T) {
 	assert.NotNil(t, resp)
 }
 func TestGetInstitution(t *testing.T) {
-	resp, err := GetInstitution("U111")
+	resp, err := GetInstitution("AAET-08ISZ")
+	assert.Nil(t, err)
+	fmt.Println(" The Results", resp)
+	assert.NotNil(t, resp)
+}
+func TestGetInstitutionsByType(t *testing.T) {
+	resp, err := GetInstitutionsByType("SGHL-INSBO")
 	assert.Nil(t, err)
 	fmt.Println(" The Results", resp)
 	assert.NotNil(t, resp)

@@ -15,12 +15,14 @@ type InstitutionCourse struct {
 	InstitutionId string `json:"institutionId"`
 	CourseId      string `json:"courseId"`
 }
+
 type InstitutionLocation struct {
 	InstitutionId string `json:"institutionId"`
 	LocationId    string `json:"locationId"`
 	Longitude     string `json:"longitude"`
 	Latitude      string `json:"latitude"`
 }
+
 type InstitutionAddress struct {
 	InstitutionId string `json:"institutionId"`
 	AddressTypeId string `json:"addressTypeId"`

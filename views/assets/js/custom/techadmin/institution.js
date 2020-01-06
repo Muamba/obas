@@ -14,7 +14,8 @@ $(document).ready(function () {
     $('#district').change(function() {
         const districtId = $(this).val();
         let townElement = $('#town');
-        let townDropDown = getDropDownElement(institutionElement, "Town");
+        //let townDropDown = getDropDownElement(institutionElement, "Town");
+        let townDropDown = getDropDownElement(townElement, "Town");
         populateLocationDropDown(townDropDown, districtId);
     });
 
@@ -24,9 +25,21 @@ $(document).ready(function () {
         let institutionDropDown = getDropDownElement(institutionElement, "Institution");
         populateInstitutionDropDownByType(institutionDropDown, institutionTypeId);
     });
-
     /** Institution Location ends here **/
 
+    $("#institutionTypeAddressDrop").change(function() {
+        const institutionTypeAddress = $(this).val();
+        let institutionAddressElement = $('#institutionAddressDrop');
+        let institutionAddressDropDown = getDropDownElement(institutionAddressElement, "Institution");
+        populateInstitutionDropDownByType(institutionAddressDropDown, institutionTypeAddress);
+    });
+
+    $("#institutionTypeCourseDrop").change(function() {
+        const institutionTypeAddress = $(this).val();
+        let institutionAddressElement = $('#institutionCourseDrop');
+        let institutionAddressDropDown = getDropDownElement(institutionAddressElement, "Institution");
+        populateInstitutionDropDownByType(institutionAddressDropDown, institutionTypeAddress);
+    });
 });
 
 function editForm(event) {

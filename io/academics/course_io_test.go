@@ -8,7 +8,7 @@ import (
 
 func TestGetCourse(t *testing.T) {
 	expected := "Test Course"
-	result, err := GetCourse("123")
+	result, err := GetCourse("AACI-XJJMU")
 	assert.Nil(t, err)
 	fmt.Println(" The Results", result)
 	assert.Equal(t, expected, result.CourseName)

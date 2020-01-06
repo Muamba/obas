@@ -7,10 +7,10 @@ type Course struct {
 }
 
 type CourseSubject struct {
-	CourseId string `json:"courseId"`
-	Name     string `json:"name"`
+	CourseId  string `json:"courseId"`
+	SubjectId string `json:"subjectId"`
 }
 type Subject struct {
 	Id   string `json:"id"`
-	Name string `json:"name"`
+	Name string `json:"subjectName"`
 }

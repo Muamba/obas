@@ -1,11 +1,27 @@
-package util
+package location
 
 import (
+	"obas/config"
+	genericHelper "obas/controllers/misc"
 	locationDomain "obas/domain/location"
 	locationIO "obas/io/location"
 )
 
-func GetProvinces() ([]locationDomain.Location, error) {
+/**
+Get provinces
+*/
+func GetProvinces(app *config.Env) ([]locationDomain.Location, genericHelper.PageToast) {
+	var provinces []locationDomain.Location
+	var alert genericHelper.PageToast
+	provinces, err := getProvinces()
+	if err != nil {
+		app.ErrorLog.Println(err.Error())
+		alert = genericHelper.PageToast{genericHelper.DangerAlertStyle, "Could not retrieve provinces!"}
+	}
+	return provinces, alert
+}
+
+func getProvinces() ([]locationDomain.Location, error) {
 	southAfricaId, err := getCountryId()
 	if err != nil {
 		return nil, err

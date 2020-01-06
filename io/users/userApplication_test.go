@@ -5,17 +5,19 @@ import (
 	"github.com/stretchr/testify/assert"
 	domain "obas/domain/users"
 	"testing"
+	"time"
 )
 
 func TestCreateUserApplication(t *testing.T) {
-	obj := domain.UserApplication{"0001", "0303445"}
+
+	obj := domain.UserApplication{"0001", "0303445", time.Now()}
 	resp, err := CreateUserApplication(obj)
 	assert.Nil(t, err)
 	fmt.Println(" The Results", resp)
 	assert.NotNil(t, resp)
 }
 func TestDeleteUserApplication(t *testing.T) {
-	obj := domain.UserApplication{"espoirditekemena@gmail.com", "AARR-6AHMZ"}
+	obj := domain.UserApplication{"espoirditekemena@gmail.com", "AARR-6AHMZ", time.Now()}
 	resp, err := DeleteUserApplication(obj)
 	assert.Nil(t, err)
 	fmt.Println(" The Results", resp)

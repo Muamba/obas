@@ -22,13 +22,13 @@ func TestDeleteSubject(t *testing.T) {
 	assert.NotNil(t, result)
 }
 func TestGetSubject(t *testing.T) {
-	result, err := GetCourseSubject("0000")
+	result, err := GetCourseSubject("0000", "")
 	assert.Nil(t, err)
 	fmt.Println(" The Results", result)
 	assert.NotNil(t, result)
 }
 func TestGetSubjects(t *testing.T) {
-	result, err := GetCourseSubjects()
+	result, err := GetSubjects()
 	assert.Nil(t, err)
 	fmt.Println(" The Results", result)
 	assert.NotNil(t, result)

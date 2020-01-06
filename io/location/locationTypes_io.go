@@ -33,6 +33,7 @@ func GetLocationType(id string) (domain.LocationType, error) {
 	}
 	return entity, nil
 }
+
 func CreateLocationType(entity domain.LocationType) (domain.LocationType, error) {
 	locationType := domain.LocationType{}
 	resp, _ := api.Rest().

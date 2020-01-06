@@ -15,11 +15,11 @@ func TestGetLocations(t *testing.T) {
 }
 
 func TestGetLocation(t *testing.T) {
-	expected := "WC"
-	value, err := GetLocation("53")
+	value, err := GetLocation("CTTE-4OILY")
 	assert.Nil(t, err)
 	fmt.Println(" The Results", value)
-	assert.Equal(t, value.Name, expected)
+	fmt.Println(" The Results", value.Name)
+	assert.NotNil(t, value)
 }
 
 func TestCreateSchool(t *testing.T) {
@@ -43,8 +43,9 @@ func TestDeleteDocument(t *testing.T) {
 	assert.Nil(t, err)
 	assert.True(t, value)
 }
-func TestGetTowns(t *testing.T) {
-	value, err := GetTowns("loc")
+
+func TestGetLocationsForParent(t *testing.T) {
+	value, err := GetLocationsForParent("AAIL-YLRUW")
 	assert.Nil(t, err)
 	fmt.Println(" The Results", value)
 	assert.NotNil(t, value)
