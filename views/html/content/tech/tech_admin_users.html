@@ -123,95 +123,103 @@
 
                 <!----------->
                 <div class="classic-tabs mx-2">
+
                     <ul class="nav nav-tabs md-tabs" id="poolsRolesTab" role="tablist">
+
                         <li class="nav-item">
-                            <a class="nav-link  waves-light active show" id="users-table-tab" data-toggle="tab"
-                               href="#country-table"
+                            <a class="nav-link  waves-light" id="users-table-tab" data-toggle="tab"
+                               href="#course-tab"
                                role="tab" aria-controls="users-table" aria-selected="true">
                                 <div style="text-align: center;"><i class="fas fa-user fa " aria-hidden="true"></i>
                                 </div>
-                                <br>Create Admin</a>
+                                <br>Roles</a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link  waves-light" id="users-table-tab" data-toggle="tab"
+                               href="#subject-tab"
+                               role="tab" aria-controls="users-table" aria-selected="true">
+                                <div style="text-align: center;"><i class="fas fa-user fa " aria-hidden="true"></i>
+                                </div>
+                                <br>User Role</a>
+                        </li>
 
                     </ul>
 
                     <div class="tab-content card" id="rolesTabContent">
 
-                        <div class="tab-pane fade active show" id="country-table" role="tabpanel"
+                        <div class="tab-pane fade {{.MyActiveTab.Tab1}}" id="course-tab" role="tabpanel"
                              aria-labelledby="pool-roles">
                             <p></p>
                             <!-- Table with panel -->
                             <div class="content">
                                 <div class="container-fluid">
+
                                     <div class="card green">
-                                        <form id="" method="post" action="#">
+                                        <form id="" method="post" action="/support/management/user/role/create">
+
                                             <div class="row justify-content-center">
                                                 <div class="col-md-8">
-                                                    <label class="control-label label-font-color"> Users Email</label>
-                                                    <input type="text" name="provinces" class="form-control"
+                                                    <label class="control-label label-font-color">Role Name</label>
+                                                    <input type="text" name="role" class="form-control"
+                                                           placeholder="Enter type ..." id="">
+                                                </div>
+                                            </div>
+
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-8">
+                                                    <label class="control-label label-font-color">Role Description</label>
+                                                    <input type="text" name="roleDescription" class="form-control"
                                                            placeholder="" id="">
                                                 </div>
+                                            </div>
+
+
+                                            <div class="row justify-content-center">
                                                 <div class="col-md-8 text-center">
                                                     <button type="submit" id="documentUpdateBtn"
                                                             class="btn btn-wd btn-info btn-outline full-width">
                                              <span class="btn-label">
-                                             </span>Search
+                                             </span>Upload
                                                     </button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
+
+                                    <!-- INSTITUTION TYPE --->
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="card strpied-tabled-with-hover">
                                                 <div class="card-body table-full-width table-responsive">
                                                     <table class="table table-hover table-striped">
                                                         <thead>
-                                                        <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>SurName</th>
-                                                        <th>Email</th>
-                                                        <th>Id</th>
-                                                        <th class="text-center">Action</th>
+                                                        <th>Role</th>
+                                                        <th class="text-center">Actions</th>
                                                         </thead>
                                                         <tbody>
-                                                        {{with .Users}}
-                                                        {{range .}}
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>{{.FirstName}}</td>
-                                                            <td>{{.LastName}}</td>
-                                                            <td>{{.Email}}</td>
-                                                            <td>{{.IdNumber}}</td>
-                                                            <td>
-                                                                <form method="post" action="/support/management/user/role/update">
-                                                                    <div class="row ">
-                                                                        <div class="col-md-6">
-                                                                            <select name="contacttypes"
-                                                                                    class="selectpicker"
-                                                                                    data-title="Select contact type"
-                                                                                    data-style="btn-default btn-outline"
-                                                                                    data-menu-style="dropdown-blue">
-                                                                                <option value="" disabled selected>
-                                                                                    Select
-                                                                                    Role
-                                                                                </option>
-                                                                                <option value="">admin</option>
-                                                                            </select>
+                                                        {{ with .Roles }}
+                                                            {{ range .}}
+                                                                <tr>
+                                                                    <td>{{ .RoleName}}</td>
+                                                                    <td><div class="row justify-content-center">
+                                                                            <div class="col-md-6">
+                                                                                <a class="edit" title="Edit"
+                                                                                   data-toggle="modal" data-target="#editModal" href=""
+                                                                                   onclick="editForm({{.}})"><i
+                                                                                            class="material-icons">&#xE254;</i></a>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <a class="delete" title="Delete"
+                                                                                   href="/support/management/user/role/delete/{{.Id}}"
+                                                                                   data-toggle="tooltip"><i
+                                                                                            class="material-icons">&#xE872;</i></a>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="col-md-3" style="margin-top: 1%">
-                                                                            <button type="submit" id="documentUpdateBtn"
-                                                                                    class="btn btn-wd btn-info btn-outline full-width">
-                                                                                <span class="btn-label"></span>Submit
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </td>
-                                                        </tr>
-                                                        {{end}}
-                                                        {{end}}
+                                                                    </td>
+                                                                </tr>
+                                                            {{ end }}
+                                                        {{ end}}
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -222,19 +230,97 @@
                             </div>
                             <!-- Table with panel -->
                         </div>
+
+                        <div class="tab-pane fade {{.MyActiveTab.Tab2}}" id="subject-tab" role="tabpanel"
+                             aria-labelledby="pool-roles">
+                            <p></p>
+                            <!-- Table with panel -->
+                            <div class="content">
+                                <div class="container-fluid">
+
+
+                                    <!-- INSTITUTION TYPE --->
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card strpied-tabled-with-hover">
+                                                <div class="card-body table-full-width table-responsive">
+                                                    <table class="table table-hover table-striped">
+                                                        <thead>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Last Name</th>
+                                                        <th>Email</th>
+                                                        <th>Id</th>
+                                                        <th>Role</th>
+                                                        <th class="text-center">Action</th>
+                                                        </thead>
+                                                        <tbody>
+                                                        {{with .UserRoleList}}
+                                                            {{range .}}
+                                                                <tr>
+                                                                    <td>1</td>
+                                                                    <td>{{.UserName}}</td>
+                                                                    <td>{{.UserSurname}}</td>
+                                                                    <td>{{.UserId}}</td>
+                                                                    <td>{{.UserIdNumber}}</td>
+                                                                    <td>{{.RoleName}}</td>
+                                                                    <td>
+                                                                        <form method="post"
+                                                                              action="/support/management/user/role/update">
+                                                                            <div class="row ">
+                                                                                <div class="col-md-6">
+                                                                                    <select name="newRole"
+                                                                                            class="selectpicker"
+                                                                                            data-title="Select contact type"
+                                                                                            data-style="btn-default btn-outline"
+                                                                                            data-menu-style="dropdown-blue">
+                                                                                        <option value="" disabled selected>Select Role</option>
+                                                                                        {{with .Roles}}
+                                                                                            {{range.}}
+                                                                                        <option value="{{.Id}}">{{.RoleName}}</option>
+                                                                                        {{end}}
+                                                                                        {{end}}
+                                                                                    </select>
+                                                                                </div>
+                                                                                <input type="hidden" class="form-control" name="userId" id="Id" value="{{.UserId}}">
+                                                                                <div class="col-md-3"
+                                                                                     style="margin-top: 1%">
+                                                                                    <button type="submit"
+                                                                                            id="documentUpdateBtn"
+                                                                                            class="btn btn-wd btn-info btn-outline full-width">
+                                                                                        <span class="btn-label"></span>Submit
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>
+                                                            {{end}}
+                                                        {{end}}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                </div>
+                            </div>
+                            <!-- Table with panel -->
+                        </div>
+
                     </div>
                 </div>
 
+
                 <!------------------------------------------------------------------>
 
-
+        {{ template "footer" .}}
             </div>
 
         </div>
-        {{ template "footer" .}}
-
-    </div>
-</div>
 
 </body>
 <!--   Core JS Files   -->
@@ -284,7 +370,6 @@
         // Javascript method's body can be found in assets/js/demos.js
         demo.initDashboardPageCharts();
 
-        demo.showNotification();
 
         demo.initVectorMap();
 

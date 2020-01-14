@@ -8,12 +8,11 @@ import (
 
 const userDocUrl = api.BASE_URL + "/users"
 
-type UserDocument domain.UserDocument
-
-func GetUserDocuments(userId string) ([]UserDocument, error) {
-	entities := []UserDocument{}
+func GetUserDocuments(userId string) ([]domain.UserDocument, error) {
+	entities := []domain.UserDocument{}
+	//entities = append(entities, domain.UserDocument{userId, "1"})
+	//entities = append(entities, domain.UserDocument{userId, "2"})
 	resp, _ := api.Rest().Get(userDocUrl + "/documents/get/" + userId)
-
 	if resp.IsError() {
 		return entities, errors.New(resp.Status())
 	}
@@ -24,9 +23,9 @@ func GetUserDocuments(userId string) ([]UserDocument, error) {
 	return entities, nil
 }
 
-func GetUserDocument(id string) (UserDocument, error) {
-	entity := UserDocument{}
-	resp, _ := api.Rest().Get(userDocUrl + "/documents/get/" + id)
+func GetUserDocument(userId, documentId string) (domain.UserDocument, error) {
+	entity := domain.UserDocument{}
+	resp, _ := api.Rest().Get(userDocUrl + "/documents/get/" + userId + "/" + documentId)
 	if resp.IsError() {
 		return entity, errors.New(resp.Status())
 	}
@@ -37,7 +36,7 @@ func GetUserDocument(id string) (UserDocument, error) {
 	return entity, nil
 }
 
-func CreateUserDocument(entity UserDocument, token string) (bool, error) {
+func CreateUserDocument(entity domain.UserDocument, token string) (bool, error) {
 	resp, _ := api.Rest().
 		SetAuthToken(token).
 		SetBody(entity).
@@ -49,7 +48,7 @@ func CreateUserDocument(entity UserDocument, token string) (bool, error) {
 	return true, nil
 }
 
-func UpdateUserDocument(entity UserDocument, token string) (bool, error) {
+func UpdateUserDocument(entity domain.UserDocument, token string) (bool, error) {
 	resp, _ := api.Rest().
 		SetAuthToken(token).
 		SetBody(entity).

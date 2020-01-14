@@ -62,7 +62,7 @@ func GetLatestForStatus(applicationId, statusId string) (ApplicationStatus, erro
 func IsApplicationCompleted(applicationId string) (bool, error) {
 	isComplete := false
 	resp, _ := api.Rest().
-		Get(applicationStatusUrl + "iscompleted/"+applicationId)
+		Get(applicationStatusUrl + "iscompleted/" + applicationId)
 	if resp.IsError() {
 		return isComplete, errors.New(resp.Status())
 	}

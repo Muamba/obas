@@ -160,7 +160,7 @@ func SaveInstitutionLocationHandler(app *config.Env) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		r.ParseForm()
-		locationId := r.PostFormValue("townId")
+		locationId := r.PostFormValue("town")
 		institutionId := r.PostFormValue("institution")
 		longitude := r.PostFormValue("longitude")
 		latitude := r.PostFormValue("latitude")
@@ -169,6 +169,8 @@ func SaveInstitutionLocationHandler(app *config.Env) http.HandlerFunc {
 
 		if locationId != "" || institutionId != "" || longitude != "" || latitude != "" {
 			institutionLocation := institutionDomain.InstitutionLocation{institutionId, locationId, longitude, latitude}
+
+			fmt.Println(institutionLocation)
 			_, err := institutionIO.CreateInstitutionLocation(institutionLocation)
 			if err != nil {
 				app.ErrorLog.Println(err.Error())
@@ -401,7 +403,7 @@ func InstitutionManagementHandler(app *config.Env) http.HandlerFunc {
 			app.ErrorLog.Println(err.Error())
 		} else {
 			for _, institutionLoca := range institutsLocation {
-				fmt.Println("error in reading townNamw in InstitutionManagementHandler method", institutionLoca.LocationId)
+				//fmt.Println("error in reading townNamw in InstitutionManagementHandler method", institutionLoca.LocationId)
 
 				institutionName, errr := institutionIO.GetInstitution(institutionLoca.InstitutionId)
 				if errr != nil {
@@ -409,7 +411,7 @@ func InstitutionManagementHandler(app *config.Env) http.HandlerFunc {
 					app.ErrorLog.Println(errr.Error())
 				}
 				townNamw, err := location.GetLocation(institutionLoca.LocationId)
-				fmt.Println("error in reading townNamw in InstitutionManagementHandler method", townNamw)
+				//fmt.Println("error in reading townNamw in InstitutionManagementHandler method", townNamw)
 				if err != nil {
 					fmt.Println("error in reading townNamw in InstitutionManagementHandler method")
 					app.ErrorLog.Println(err.Error())

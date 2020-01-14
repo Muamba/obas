@@ -12,21 +12,21 @@ type AddressType domain.AddressType
 
 func GetAddressTypes() ([]AddressType, error) {
 	entities := []AddressType{}
-	//addT1 := AddressType{"123", "Physical Address"}
-	//addT2 := AddressType{"246", "Postal Address"}
-	//
-	//allAdd := []AddressType{addT1, addT2}
-	//
-	//entities = allAdd
-	resp, _ := api.Rest().Get(addressTypeUrl + "/all")
+	addT1 := AddressType{"123", "Physical Address"}
+	addT2 := AddressType{"246", "Postal Address"}
 
-	if resp.IsError() {
-		return entities, errors.New(resp.Status())
-	}
-	err := api.JSON.Unmarshal(resp.Body(), &entities)
-	if err != nil {
-		return entities, errors.New(resp.Status())
-	}
+	allAdd := []AddressType{addT1, addT2}
+
+	entities = allAdd
+	//resp, _ := api.Rest().Get(addressTypeUrl + "/all")
+	//
+	//if resp.IsError() {
+	//	return entities, errors.New(resp.Status())
+	//}
+	//err := api.JSON.Unmarshal(resp.Body(), &entities)
+	//if err != nil {
+	//	return entities, errors.New(resp.Status())
+	//}
 	return entities, nil
 }
 

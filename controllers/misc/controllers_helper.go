@@ -10,6 +10,8 @@ const (
 	LayoutOBAS        = "2006-01-02"
 	DangerAlertStyle  = "alert-danger"
 	SuccessAlertStyle = "alert-success"
+	NonMatricProgressBarIncrementValue = 4.1666666667
+	MatricProgressBarIncrementVale = 5.882353
 )
 
 type PageToast struct {

@@ -8,10 +8,8 @@ import (
 
 const usersUrl = api.BASE_URL + "/users"
 
-type User userDomain.User
-
-func GetUsers() ([]User, error) {
-	entites := []User{}
+func GetUsers() ([]userDomain.User, error) {
+	entites := []userDomain.User{}
 	resp, _ := api.Rest().Get(usersUrl + "/all")
 
 	if resp.IsError() {
@@ -24,9 +22,9 @@ func GetUsers() ([]User, error) {
 	return entites, nil
 }
 
-func GetUser(id string) (User, error) {
-	entity := User{}
-	//entity = User{id, "4829830090930", "Arinze", "", "Anikwue", time.Now()}
+func GetUser(id string) (userDomain.User, error) {
+	entity := userDomain.User{}
+	//entity = userDomain.User{id, "4829830090930", "Arinze", "", "Anikwue", time.Now()}
 	resp, _ := api.Rest().Get(usersUrl + "/get/" + id)
 	if resp.IsError() {
 		return entity, errors.New(resp.Status())
@@ -49,7 +47,7 @@ func CreateUser(entity interface{}) (bool, error) {
 	return true, nil
 }
 
-func UpdateUser(entity User, token string) (bool, error) {
+func UpdateUser(entity userDomain.User, token string) (bool, error) {
 	resp, _ := api.Rest().
 		SetAuthToken(token).
 		SetBody(entity).

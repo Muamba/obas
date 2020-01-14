@@ -24,9 +24,9 @@ func CreateSubject(obj domain.Subject) (domain.Subject, error) {
 func GetSubject(id string) (domain.Subject, error) {
 	entity := domain.Subject{}
 	//if id == "1" {
-	//	entity = domain.Subject{id, "English"}
+	//	entity = domain.Subject{id, "English", ""}
 	//} else if id == "2" {
-	//	entity = domain.Subject{id, "Mathematics"}
+	//	entity = domain.Subject{id, "Mathematics", ""}
 	//}
 	resp, _ := api.Rest().Get(subjectURL + "/get/" + id)
 	if resp.IsError() {

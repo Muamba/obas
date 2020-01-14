@@ -34,6 +34,20 @@ func GetApplicantType(applicantTypeId string) (domain.ApplicantType, error) {
 	return entity, nil
 }
 
+func GetMatricApplicantType() (domain.ApplicantType, error) {
+	entity := domain.ApplicantType{}
+	//entity = domain.ApplicantType{"1", "Matric", ""}
+	resp, _ := api.Rest().Get(applicanttypeURL + "/getmatric")
+	if resp.IsError() {
+		return entity, errors.New(resp.Status())
+	}
+	err := api.JSON.Unmarshal(resp.Body(), &entity)
+	if err != nil {
+		return entity, errors.New(resp.Status())
+	}
+	return entity, nil
+}
+
 func GetApplicantTypes() ([]domain.ApplicantType, error) {
 	entity := []domain.ApplicantType{}
 	//entity = append(entity, domain.ApplicantType{"1", "Matric Applicant", ""})

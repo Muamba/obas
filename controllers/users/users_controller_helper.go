@@ -3,9 +3,14 @@ package users
 import (
 	"obas/config"
 	academicsHelper "obas/controllers/academics"
+	applicationHelper "obas/controllers/application"
+	documentHelper "obas/controllers/documents"
 	institutionHelper "obas/controllers/institutions"
 	genericHelper "obas/controllers/misc"
 	academicsDomain "obas/domain/academics"
+	applicationDomain "obas/domain/application"
+	documentDomain "obas/domain/documents"
+	institutionDomain "obas/domain/institutions"
 	userDomain "obas/domain/users"
 	demographyIO "obas/io/demographics"
 	usersIO "obas/io/users"
@@ -19,6 +24,13 @@ type ExtendedUserMatricSubject struct {
 type ExtendedUserTertiarySubject struct {
 	userDomain.UserTertiarySubject
 	SubjectName string
+}
+
+type ExtendedDocument struct {
+	documentDomain.Document
+	DocumentType        string
+	DocumentDate        string
+	DocumentStatusBadge string
 }
 
 /**
@@ -205,6 +217,20 @@ func getUserTertiaryCourseForApplication(app *config.Env, userId string, applica
 }
 
 /**
+Get user (prospective) application course given user id and application id
+ */
+func getUserApplicationCourse(app *config.Env, userId, applicationId string) (userDomain.UserApplicationCourse, genericHelper.PageToast) {
+	var userApplicationCourse userDomain.UserApplicationCourse
+	var alert genericHelper.PageToast
+	userApplicationCourse, err := usersIO.GetUserApplicationCourse(userId, applicationId)
+	if err != nil {
+		app.ErrorLog.Println(err.Error())
+		alert = genericHelper.PageToast{genericHelper.DangerAlertStyle, "Could not retrieve user application course!"}
+	}
+	return userApplicationCourse, alert
+}
+
+/**
 Get subjects for course given course id
  */
 func getCourseSubjects(app *config.Env, courseId string) ([]academicsDomain.Subject, genericHelper.PageToast) {
@@ -221,4 +247,104 @@ func getCourseSubjects(app *config.Env, courseId string) ([]academicsDomain.Subj
 		}
 	}
 	return subjects, alert
+}
+
+/**
+Get user application (prospective) institution given user id and application id
+ */
+func getUserApplicationInstitution(app *config.Env, userId, applicationId string) (userDomain.UserApplicationInstitution, genericHelper.PageToast) {
+	var userApplicationInstitution userDomain.UserApplicationInstitution
+	var alert genericHelper.PageToast
+	userApplicationInstitution, err := usersIO.GetUserApplicationInstitution(userId, applicationId)
+	if err != nil {
+		app.ErrorLog.Println(err.Error())
+		alert = genericHelper.PageToast{genericHelper.DangerAlertStyle, "Could not retrieve user application institution!"}
+	}
+	return userApplicationInstitution, alert
+}
+
+/**
+Get document types
+ */
+func getDocumentTypes(app *config.Env) ([]documentDomain.DocumentType, genericHelper.PageToast) {
+	return documentHelper.GetDocumentTypes(app)
+}
+
+/**
+Get institution types
+ */
+func getInstitutionTypes(app *config.Env) ([]institutionDomain.InstitutionTypes, genericHelper.PageToast) {
+	return institutionHelper.GetInstitutionTypes(app)
+}
+
+/**
+Get transformed/extended (ETL) user documents data given user id
+ */
+func getUserDocumentData(app *config.Env, userId string) ([]ExtendedDocument, genericHelper.PageToast) {
+	var eUserDocuments []ExtendedDocument
+	userDocuments, alert := getUserDocuments(app, userId)
+	proceed := alert.AlertInfo == ""
+	if proceed {
+		for _, userDocument := range userDocuments {
+			document, alert := documentHelper.GetDocument(app, userDocument.DocumentId)
+			proceed = alert.AlertInfo == ""
+			var documentType documentDomain.DocumentType
+			if proceed {
+				documentType, alert = documentHelper.GetDocumentType(app, document.DocumentTypeId)
+				proceed = alert.AlertInfo == ""
+			}
+			if proceed {
+				date := genericHelper.GetDate_YYYYMMDD(document.Date.String())
+				var progressBadge string
+				documentStatus := document.DocumentStatus
+				if documentStatus == "Approved" {
+					progressBadge = "badge-success"
+				} else if documentStatus == "Not Approved" {
+					progressBadge = "badge-danger"
+				} else {
+					progressBadge = "badge-warning"
+				}
+				eUserDocument := ExtendedDocument{document, documentType.DocumentTypename, date, progressBadge}
+				eUserDocuments = append(eUserDocuments, eUserDocument)
+			} else {
+				app.ErrorLog.Println(alert.AlertInfo)
+			}
+		}
+	}
+	return eUserDocuments, alert
+}
+
+/**
+Get user documents given user id
+ */
+func getUserDocuments(app *config.Env, userId string) ([]userDomain.UserDocument, genericHelper.PageToast) {
+	var userDocuments []userDomain.UserDocument
+	var alert genericHelper.PageToast
+	userDocuments, err := usersIO.GetUserDocuments(userId)
+	if err != nil {
+		app.ErrorLog.Println(err.Error())
+		alert = genericHelper.PageToast{genericHelper.DangerAlertStyle, "Could not retrieve user documents!"}
+	}
+	return userDocuments, alert
+}
+
+/**
+Get applicant types
+ */
+func getApplicantTypes(app *config.Env) ([]applicationDomain.ApplicantType, genericHelper.PageToast) {
+	return applicationHelper.GetApplicantTypes(app)
+}
+
+/**
+Get application types
+ */
+func getApplicationTypes(app *config.Env) ([]applicationDomain.ApplicationType, genericHelper.PageToast) {
+	return applicationHelper.GetApplicationTypes(app)
+}
+
+/**
+Get matric appliant
+ */
+func getMatricApplicantType(app *config.Env) (applicationDomain.ApplicantType, genericHelper.PageToast) {
+	return applicationHelper.GetMatricApplicantType(app)
 }

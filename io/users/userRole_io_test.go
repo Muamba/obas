@@ -11,7 +11,7 @@ func TestGetUserRoles(t *testing.T) {
 	result, err := GetUserRoles()
 	assert.Nil(t, err)
 	fmt.Println(" The Results", result)
-	assert.True(t, len(result) > 0)
+	assert.NotNil(t, result)
 }
 
 func TestGetUserRole(t *testing.T) {

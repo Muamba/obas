@@ -17,3 +17,10 @@ type DocumentType struct {
 	DocumentTypeId   string `json:"documentTypeId"`
 	DocumentTypename string `json:"documentTypename"`
 }
+type DocumentStatus struct {
+	DocumentId string    `json:"documentId"`
+	StatusId   string    `json:"statusId"`
+	ModifiedBy string    `json:"modifiedBy"`
+	Comment    string    `json:"comment"`
+	DateTime   time.Time `json:"dateTime"`
+}

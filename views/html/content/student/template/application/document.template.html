@@ -12,7 +12,7 @@
             <div class="card-body beautify">
                 <ul role="tablist" class="nav nav-tabs">
                     <li role="presentation" class="nav-item show active" aria-expanded="false">
-                        <a class="nav-link" id="document-tab" href="#document"
+                        <a class="nav-link" id="document-upload-tab" href="#document-upload"
                            data-toggle="tab" >Document</a>
                     </li>
                     <!--li class="nav-item">
@@ -25,10 +25,10 @@
                     </li-->
                 </ul>
                 <div class="tab-content">
-                    <div id="document" class="tab-pane fade show active" role="tabpanel"
-                         aria-labelledby="document-tab" aria-expanded="false">
+                    <div id="document-upload" class="tab-pane fade show active" role="tabpanel"
+                         aria-labelledby="document-upload-tab" aria-expanded="false">
 
-                        <form id="documentForm" enctype="multipart/form-data"
+                        <form id="documentUploadForm" enctype="multipart/form-data"
                               action="/users/student-document-file-upload">
                             <div class="row justify-content-center">
                                 <div class="col-md-6">
@@ -37,7 +37,11 @@
                                             data-style="btn-default btn-outline"
                                             data-menu-style="dropdown-blue">
                                         <option value="" disabled selected>Select Document Type</option>
-                                        <option value=""></option>
+                                        {{with .DocumentTypes}}
+                                            {{range .}}
+                                                <option value={{ .DocumentTypeId }}>{{ .DocumentTypename }}</option>
+                                            {{end}}
+                                        {{end}}
                                     </select>
                                 </div>
                             </div>
@@ -60,7 +64,7 @@
                         <hr class="hrcolor">
                         <div class="row justify-content-center">
                             <div class="col-md-10">
-                                <div class="bootstrap-table rectagler ">
+                                <div class="card bootstrap-table rectagler ">
                                     <div class="fixed-table-toolbar">
                                         <div class="bars pull-left">
                                             <div class="toolbar">
@@ -77,17 +81,15 @@
                                                     <span
                                                             class="caret"></span></button>
                                                 <ul class="dropdown-menu" role="menu">
-                                                    <li><label><input type="checkbox" data-field="id" value="1"
-                                                                      checked="checked"> ID</label></li>
-                                                    <li><label><input type="checkbox" data-field="name" value="2"
-                                                                      checked="checked"> Name</label></li>
-                                                    <li><label><input type="checkbox" data-field="salary" value="3"
-                                                                      checked="checked"> Salary</label></li>
-                                                    <li><label><input type="checkbox" data-field="country" value="4"
-                                                                      checked="checked"> Country</label></li>
-                                                    <li><label><input type="checkbox" data-field="city" value="5"
-                                                                      checked="checked"> City</label></li>
-                                                    <li><label><input type="checkbox" data-field="actions" value="6"
+                                                    <li><label><input type="checkbox" data-field="documentType" value="1"
+                                                                      checked="checked"> Document Type</label></li>
+                                                    <li><label><input type="checkbox" data-field="description" value="2"
+                                                                      checked="checked"> Description</label></li>
+                                                    <li><label><input type="checkbox" data-field="date" value="3"
+                                                                      checked="checked"> Date</label></li>
+                                                    <li><label><input type="checkbox" data-field="status" value="4"
+                                                                      checked="checked"> Status</label></li>
+                                                    <li><label><input type="checkbox" data-field="actions" value="5"
                                                                       checked="checked"> Actions</label></li>
                                                 </ul>
                                             </div>
@@ -104,29 +106,20 @@
                                             <table id="bootstrap-table" class="table table-hover">
                                                 <thead>
                                                 <tr>
-                                                    <th class="bs-checkbox " style="width: 36px; " data-field="state">
-                                                        <div class="th-inner "><input name="btSelectAll"
-                                                                                      type="checkbox"></div>
+                                                    <th class="text-center" style="" data-field="documentType">
+                                                        <div class="th-inner sortable both">Document Type</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th class="text-center" style="" data-field="id">
-                                                        <div class="th-inner ">ID</div>
+                                                    <th style="" data-field="description">
+                                                        <div class="th-inner sortable both">Description</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th style="" data-field="name">
-                                                        <div class="th-inner sortable both">Name</div>
+                                                    <th style="" data-field="date">
+                                                        <div class="th-inner sortable both">Date</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th style="" data-field="salary">
-                                                        <div class="th-inner sortable both">Salary</div>
-                                                        <div class="fht-cell"></div>
-                                                    </th>
-                                                    <th style="" data-field="country">
-                                                        <div class="th-inner sortable both">Country</div>
-                                                        <div class="fht-cell"></div>
-                                                    </th>
-                                                    <th style="" data-field="city">
-                                                        <div class="th-inner ">City</div>
+                                                    <th style="" data-field="status">
+                                                        <div class="th-inner sortable both">Status</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
                                                     <th class="td-actions text-right" style="" data-field="actions">
@@ -136,72 +129,27 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr data-index="16">
-                                                    <td class="bs-checkbox"><input data-index="16" name="btSelectItem"
-                                                                                   type="checkbox"></td>
-                                                    <td class="text-center" style="">17</td>
-                                                    <td style="">Connor Wagner</td>
-                                                    <td style="">$86,537</td>
-                                                    <td style="">Germany</td>
-                                                    <td style="">Solihull</td>
-                                                    <td class="td-actions text-right" style=""><a rel="tooltip"
-                                                                                                  title="View"
-                                                                                                  class="btn btn-link btn-info table-action view"
-                                                                                                  href="javascript:void(0)"><i
-                                                                    class="fa fa-image"></i></a><a rel="tooltip"
-                                                                                                   title="Edit"
-                                                                                                   class="btn btn-link btn-warning table-action edit"
-                                                                                                   href="javascript:void(0)"><i
-                                                                    class="fa fa-edit"></i></a><a rel="tooltip"
-                                                                                                  title="Remove"
-                                                                                                  class="btn btn-link btn-danger table-action remove"
-                                                                                                  href="javascript:void(0)"><i
-                                                                    class="fa fa-remove"></i></a></td>
-                                                </tr>
-                                                <tr data-index="17">
-                                                    <td class="bs-checkbox"><input data-index="17" name="btSelectItem"
-                                                                                   type="checkbox"></td>
-                                                    <td class="text-center" style="">18</td>
-                                                    <td style="">Boris Horton</td>
-                                                    <td style="">$35,094</td>
-                                                    <td style="">Laos</td>
-                                                    <td style="">Saint-Mard</td>
-                                                    <td class="td-actions text-right" style=""><a rel="tooltip"
-                                                                                                  title="View"
-                                                                                                  class="btn btn-link btn-info table-action view"
-                                                                                                  href="javascript:void(0)"><i
-                                                                    class="fa fa-image"></i></a><a rel="tooltip"
-                                                                                                   title="Edit"
-                                                                                                   class="btn btn-link btn-warning table-action edit"
-                                                                                                   href="javascript:void(0)"><i
-                                                                    class="fa fa-edit"></i></a><a rel="tooltip"
-                                                                                                  title="Remove"
-                                                                                                  class="btn btn-link btn-danger table-action remove"
-                                                                                                  href="javascript:void(0)"><i
-                                                                    class="fa fa-remove"></i></a></td>
-                                                </tr>
-                                                <tr data-index="18">
-                                                    <td class="bs-checkbox"><input data-index="18" name="btSelectItem"
-                                                                                   type="checkbox"></td>
-                                                    <td class="text-center" style="">19</td>
-                                                    <td style="">Winifred Ryan</td>
-                                                    <td style="">$64,436</td>
-                                                    <td style="">Ireland</td>
-                                                    <td style="">Ronciglione</td>
-                                                    <td class="td-actions text-right" style=""><a rel="tooltip"
-                                                                                                  title="View"
-                                                                                                  class="btn btn-link btn-info table-action view"
-                                                                                                  href="javascript:void(0)"><i
-                                                                    class="fa fa-image"></i></a><a rel="tooltip"
-                                                                                                   title="Edit"
-                                                                                                   class="btn btn-link btn-warning table-action edit"
-                                                                                                   href="javascript:void(0)"><i
-                                                                    class="fa fa-edit"></i></a><a rel="tooltip"
-                                                                                                  title="Remove"
-                                                                                                  class="btn btn-link btn-danger table-action remove"
-                                                                                                  href="javascript:void(0)"><i
-                                                                    class="fa fa-remove"></i></a></td>
-                                                </tr>
+                                                {{ range $index, $userDocument := .UserDocuments }}
+                                                    <tr data-index="{{ $index }}">
+                                                        <td style="">{{ $userDocument.DocumentType }}</td>
+                                                        <td style="">{{ $userDocument.Document.Description }}</td>
+                                                        <td style="">{{ $userDocument.DocumentDate }}</td>
+                                                        <td style=""><span class="badge {{ $userDocument.DocumentStatusBadge }}">{{ $userDocument.Document.DocumentStatus }}</span></td>
+                                                        <td class="td-actions text-right" style=""><a rel="tooltip"
+                                                                                                      title="View"
+                                                                                                      class="btn btn-link btn-info table-action view"
+                                                                                                      href="javascript:void(0)"><i
+                                                                        class="fa fa-image"></i></a><a rel="tooltip"
+                                                                                                       title="Edit"
+                                                                                                       class="btn btn-link btn-warning table-action edit"
+                                                                                                       href="javascript:void(0)"><i
+                                                                        class="fa fa-edit"></i></a><a rel="tooltip"
+                                                                                                      title="Remove"
+                                                                                                      class="btn btn-link btn-danger table-action remove"
+                                                                                                      href="javascript:void(0)"><i
+                                                                        class="fa fa-remove"></i></a></td>
+                                                    </tr>
+                                                {{ end}}
                                                 </tbody>
                                             </table>
                                         </div>

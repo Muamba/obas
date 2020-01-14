@@ -35,6 +35,19 @@ func CreateStatus(entity domain.GenericStatus) (domain.GenericStatus, error) {
 	}
 	return saved, nil
 }
+func GetStatus(id string) (domain.GenericStatus, error) {
+	entites := domain.GenericStatus{}
+	resp, _ := api.Rest().Get(utilStatusURL + "get/" + id)
+
+	if resp.IsError() {
+		return entites, errors.New(resp.Status())
+	}
+	err := api.JSON.Unmarshal(resp.Body(), &entites)
+	if err != nil {
+		return entites, errors.New(resp.Status())
+	}
+	return entites, nil
+}
 
 func GetIncompleteStatus()(domain.GenericStatus, error) {
 	entity := domain.GenericStatus{}

@@ -11,6 +11,7 @@ type CourseSubject struct {
 	SubjectId string `json:"subjectId"`
 }
 type Subject struct {
-	Id   string `json:"id"`
-	Name string `json:"subjectName"`
+	Id          string `json:"id"`
+	Name        string `json:"subjectName"`
+	SubjectDesc string `json:"subjectDesc"`
 }

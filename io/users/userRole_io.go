@@ -3,17 +3,14 @@ package users
 import (
 	"errors"
 	"obas/api"
-	domain "obas/domain/users"
+	userDomain "obas/domain/users"
 )
 
 const userRoleUrl = api.BASE_URL + "/users"
 
-type uRole domain.UserRole
-
-func GetUserRoles() ([]uRole, error) {
-	entites := []uRole{}
+func GetUserRoles() ([]userDomain.UserRole, error) {
+	entites := []userDomain.UserRole{}
 	resp, _ := api.Rest().Get(userRoleUrl + "/role/all")
-
 	if resp.IsError() {
 		return entites, errors.New(resp.Status())
 	}
@@ -24,8 +21,8 @@ func GetUserRoles() ([]uRole, error) {
 	return entites, nil
 }
 
-func GetUserRole(id string) (uRole, error) {
-	entity := uRole{}
+func GetUserRole(id string) (userDomain.UserRole, error) {
+	entity := userDomain.UserRole{}
 	resp, _ := api.Rest().Get(userRoleUrl + "/role/get/" + id)
 	if resp.IsError() {
 		return entity, errors.New(resp.Status())
@@ -44,7 +41,6 @@ func CreateUserRole(entity interface{}) (bool, error) {
 	if resp.IsError() {
 		return false, errors.New(resp.Status())
 	}
-
 	return true, nil
 }
 
@@ -55,17 +51,28 @@ func UpdateUserRole(entity interface{}) (bool, error) {
 	if resp.IsError() {
 		return false, errors.New(resp.Status())
 	}
-
 	return true, nil
 }
 
-func DeleteUserRole(entity interface{}) (bool, error) {
+func DeleteUserRole(entity userDomain.UserRole) (bool, error) {
 	resp, _ := api.Rest().
 		SetBody(entity).
 		Post(userRoleUrl + "/role/delete")
 	if resp.IsError() {
 		return false, errors.New(resp.Status())
 	}
-
 	return true, nil
+}
+
+func GetUserRoleWithUserId(userId string) (userDomain.UserRole, error) {
+	entity := userDomain.UserRole{}
+	resp, _ := api.Rest().Get(userRoleUrl + "/role/getforuser/" + userId)
+	if resp.IsError() {
+		return entity, errors.New(resp.Status())
+	}
+	err := api.JSON.Unmarshal(resp.Body(), &entity)
+	if err != nil {
+		return entity, errors.New(resp.Status())
+	}
+	return entity, nil
 }

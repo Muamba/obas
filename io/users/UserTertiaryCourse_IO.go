@@ -24,7 +24,7 @@ func CreateUserTertiaryCourse(entity domain.UserTertiaryCourse) (domain.UserTert
 
 func GetUserTertiaryCourseForApplication(userId, applicationId string) (domain.UserTertiaryCourse, error) {
 	entity := domain.UserTertiaryCourse{}
-	//entity = domain.UserTertiaryCourse{userId, applicationId, "1"}
+	//entity = domain.UserTertiaryCourse{userId, applicationId, "2"}
 	resp, _ := api.Rest().Get(userTertiaryCourseURL + "getforapplication/" + userId + "/" + applicationId)
 	if resp.IsError() {
 		return entity, errors.New(resp.Status())

@@ -3,11 +3,14 @@
     width: 100%;
     height: 70%;
     border-radius: 3%;
-    padding-right: 15px;
+    padding-right: 25px;
     padding-left: 15px
 }
 .obas-select-inner-text {
     color: #6c757d;
     font-family: "Roboto";
     font-size: 14px;
+}
+.mydrop{
+    background-color: #FFFFFF;!important;
 }

@@ -3,7 +3,6 @@ package applications
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
-	domain "obas/domain/application"
 	"testing"
 	"time"
 )
@@ -22,7 +21,8 @@ func TestGetApplicationStatus(t *testing.T) {
 
 func TestCreateApplicationStatus(t *testing.T) {
 	//appType := domain.ApplicationStatus{"212", "Successful", "Final decision"}
-	appType := domain.ApplicationStatus{"CCMO-0TAGM", "Completed", "Done", "", time.Now()}
+	//appType := application.ApplicationStatus{"CCMO-0TAGM", "Completed", "Done", "", time.Now()}
+	appType := ApplicationStatus{"CCMO-0TAGM", "Completed", "Done", "", time.Now()}
 	value, err := CreateApplicationStatus(appType)
 	assert.Nil(t, err)
 	fmt.Println(" The Results", value)

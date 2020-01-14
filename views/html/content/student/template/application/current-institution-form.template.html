@@ -88,20 +88,20 @@
                                 <div class="col-md-5">
                                     <input type="hidden" name="applicationId" value="{{ .Application.Id }}"/>
                                     <label class="control-label label-font-color">Course</label>
-                                    <select name="course" class="selectpicker"
-                                            data-style="btn-default btn-outline"
+                                    <select name="course" class="selectpicker" id="course"
+                                            data-style="btn-default btn-outline" onchange="checkSelectedCurrentCourse({{ .UserTertiaryCourse.CourseId }})"
                                             data-menu-style="dropdown-blue">
                                         <option value="" disabled selected>Select Course</option>
                                         {{ with .CurrentTertiaryCourses }}
                                             {{ range . }}
-                                                <option value="{{ .Id }}">{{ .CourseName }}</option>
+                                                <option value="{{ .Id }}" {{ if eq $.UserTertiaryCourse.CourseId .Id}} selected {{end}} >{{ .CourseName }}</option>
                                             {{ end }}
                                         {{ end }}
                                     </select>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="control-label label-font-color">&nbsp;</label>
-                                    <button type="submit" id="updateButton"
+                                    <button type="submit" id="saveTertiaryCourseBtn"
                                             class="btn btn-wd btn-info btn-outline bootstrap-select">
                                                     <span class="btn-label">
                                                         <i class="fa fa-exclamation"></i>

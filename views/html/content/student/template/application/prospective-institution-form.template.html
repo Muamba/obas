@@ -2,7 +2,8 @@
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">
-                <a data-target="#prospectiveInstitutionInfo" href="#" data-toggle="collapse" class="collapsed" aria-expanded="false">
+                <a data-target="#prospectiveInstitutionInfo" href="#" data-toggle="collapse" class="collapsed"
+                   aria-expanded="false">
                     Prospective Institution Information
                     <b class="caret"></b>
                 </a>
@@ -16,71 +17,86 @@
                            data-toggle="tab">Prospective Institution</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link yelowText" id="prospective-course-tab" href="#prospective-course" data-toggle="tab"
+                        <a class="nav-link yelowText" id="prospective-course-tab" href="#prospective-course"
+                           data-toggle="tab"
                            aria-expanded="false">Prospective Course</a>
                     </li>
                 </ul>
                 <div class="tab-content">
                     <div id="prospective-institution" class="tab-pane fade show active" role="tabpanel"
                          aria-labelledby="prospective-institution-tab" aria-expanded="false">
-                        <form id="prospectiveInstitutionForm" method="post"
-                              action="/users/student/bursary/prospective/institution/update">
-                            {{ template "location-form" .}}
-                            {{ template "institution-form" .}}
-                            <div class="row justify-content-center">
-                                <div class="col-md-10">
-                                    <button type="reset" id="clearButton"
-                                            class="btn btn-wd btn-danger btn-outline pull-left">
+                        <div class="row">
+                            <div class="{{ if .UserApplicationInstitutionName }} col-md-8 {{ else}} col-md-12 {{ end }}">
+                                <form id="prospectiveInstitutionForm" method="post"
+                                      action="/users/student/bursary/application/institution/prospective/update">
+                                    {{ template "location-form" .}}
+                                    {{ template "institution-form" .}}
+                                    <input type="hidden" name="applicationId" value="{{ .Application.Id }}"/>
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-10">
+                                            <button type="reset" id="clearButton"
+                                                    class="btn btn-wd btn-danger btn-outline pull-left">
                                                     <span class="btn-label">
                                                         <i class="fa fa-times"></i>
                                                     </span>
-                                        Clear
-                                    </button>
-                                    <button type="submit" id="updateButton"
-                                            class="btn btn-wd btn-info btn-outline pull-right">
+                                                Clear
+                                            </button>
+                                            <button type="submit" id="updateButton"
+                                                    class="btn btn-wd btn-info btn-outline pull-right">
                                                     <span class="btn-label">
                                                         <i class="fa fa-exclamation"></i>
                                                     </span>
-                                        Update
-                                    </button>
-                                </div>
-                                <div class="clearfix"></div>
+                                                Update
+                                            </button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
+                            {{ if .UserApplicationInstitutionName }}
+                                <div class="col-md-4">
+                                    <div class="card ">
+                                        <div class="card-footer ">
+                                            <p>Name: {{ .UserApplicationInstitutionName }}</p>
+                                            <hr>
+                                            <div class="stats">
+                                                <i class="fa fa-cog"></i>Your Prospective Institution
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{ end}}
+                        </div>
                     </div>
                     <div id="prospective-course" class="tab-pane fade" role="tabpanel"
                          aria-labelledby="prospective-course-tab" aria-expanded="false">
                         <form id="prospectiveCourseForm" method="post"
-                              action="/users/student/bursary/prospective/course/update">
+                              action="/users/student/bursary/application/institution/prospective/course/update">
                             <div class="row justify-content-center">
-                                <div class="col-md-10">
+                                <div class="col-md-5">
+                                    <input type="hidden" name="applicationId" value="{{ .Application.Id }}"/>
                                     <label class="control-label label-font-color">Course</label>
-                                    <select name="course" class="selectpicker"
-                                            data-style="btn-default btn-outline"
+                                    <select name="course" class="selectpicker" id="course"
+                                            data-style="btn-default btn-outline" onchange="checkSelectedProspectiveCourse({{ .UserApplicationCourse.CourseId }})"
                                             data-menu-style="dropdown-blue">
                                         <option value="" disabled selected>Select Course</option>
-                                        <option value="">Information Technology</option>
+                                        {{ with .ProspectiveTertiaryCourses }}
+                                            {{ range . }}
+                                                <option value="{{ .Id }}" {{ if eq $.UserApplicationCourse.CourseId .Id}} selected {{end}} >{{ .CourseName }}</option>
+                                            {{ end }}
+                                        {{ end }}
                                     </select>
                                 </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-md-10">
-                                    <button type="reset" id="clearButton"
-                                            class="btn btn-wd btn-danger btn-outline pull-left">
-                                                    <span class="btn-label">
-                                                        <i class="fa fa-times"></i>
-                                                    </span>
-                                        Clear
-                                    </button>
-                                    <button type="submit" id="updateButton"
-                                            class="btn btn-wd btn-info btn-outline pull-right">
+                                <div class="col-md-2">
+                                    <label class="control-label label-font-color">&nbsp;</label>
+                                    <button type="submit" id="saveProspectiveTertiaryCourseBtn"
+                                            class="btn btn-wd btn-info btn-outline bootstrap-select">
                                                     <span class="btn-label">
                                                         <i class="fa fa-exclamation"></i>
                                                     </span>
-                                        Update
+                                        Save
                                     </button>
                                 </div>
-                                <div class="clearfix"></div>
                             </div>
                         </form>
                     </div>

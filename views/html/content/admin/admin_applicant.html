@@ -47,23 +47,28 @@
                                     </h4>
                                     </p>
                                     <thead>
-                                    <th>Select</th>
-                                    <th>Application Code</th>
-                                    <th>Email</th>
+
+                                    <th>Applicant Email</th>
+                                    <th>Application Date</th>
                                     <th>Application Status</th>
-                                    <th>Phone</th>
-                                    <th>Action</th>
+                                    <th>Modifier</th>
+                                    <th>Date of Modification</th>
+                                    <th>View</th>
                                     </thead>
                                     <tbody>
+                                    {{with .Applicant}}
+                                    {{range .}}
                                     <tr>
-                                        <td>1</td>
-                                        <td>CTR050</td>
-                                        <td>joseph@gmail.com</td>
-                                        <td>In process</td>
-                                        <td>0625401763</td>
-                                        <td><a href="/">verify documents</a></td>
 
+                                        <td>{{.Email}}</td>
+                                        <td>{{.DateTime}}</td>
+                                        <td>{{.Stat}}</td>
+                                        <td>{{.ApplicationStat.ModifiedBy}}</td>
+                                        <td>{{.ApplicationStat.DateTime}}</td>
+                                        <td><a href="/admin/applicant/application/{{.ApplicantionId}}/{{.Email}}">verify documents</a></td>
                                     </tr>
+                                    {{end}}
+                                    {{end}}
 
                                     </tbody>
                                 </table>
@@ -78,65 +83,62 @@
 
 
                         <div class="card table-with-links">
-
                             <div class="card-header ">
                                 <h4 class="card-title">Documents Table</h4>
                                 <p class="card-category">Document for Espoir Diteekemena</p>
                             </div>
                             <div class="wrap">
-
                             </div>
                             <div class="card-body table-full-width">
                                 <table class="table">
-
                                     <thead>
                                     <tr>
-                                        <th class="text-center">#</th>
                                         <th>Document Type</th>
+                                        <th class="text-center">Document</th>
+                                        <th class="text-center">file Document</th>
                                         <th class="text-center">Status</th>
-                                        <th class="text-center">View Documents</th>
-                                        <th class="text-center">file</th>
-                                        <th class="text-center">file</th>
                                         <th class="text-center">Change Document Stat</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    {{with .Document}}
+                                    {{range .}}
                                     <tr>
-
-                                        <td class="text-center">1</td>
-                                        <td>ID</td>
-                                        <td class="text-center">&euro; 99,225</td>
-                                        <td class="text-center">&euro; 99,225</td>
+                                        <td class="text-center">{{.DocumentType}}</td>
+                                        <td class="text-center">{{.Document}}</td>
                                         <td class="td-actions text-center">
-                                            <a href="#" rel="tooltip" title="View Profile" class="fa fa-image"
+                                            <a href="{{.Doc.Url}}" rel="tooltip" title="View Profile" class="fa fa-image"
                                                onclick="demo.showSwal('basic')"></a>
                                         </td>
                                         <td>
                                             <div class="font-icon-detail text-center">
-                                                <a download="logo" href="../../../assets/img/Logo-04.png"><i
+                                                <a download="logo" href="{{.Doc.Url}}"><i
                                                             class="nc-icon nc-cloud-download-93">
                                                     </i></a>
                                             </div>
                                         </td>
                                         <td >
                                             <div class="row justify-content-center">
-                                                <form>
+                                                <form method="post" action="/admin/change/document-status">
                                                     <div class="row justify-content-center">
 
                                                         <div class="row">
                                                             <div class="col-md-7">
-                                                                <select name="currentQualification" class="selectpicker"
+                                                                <select name="documentStatusId" class="selectpicker"
                                                                         data-title="Example: 3"
                                                                         data-style="btn-default btn-outline"
                                                                         data-menu-style="dropdown-blue">
-                                                                    <option value="id" disabled selected>Status
-                                                                    </option>
-                                                                    <option value="id">Student</option>
-                                                                    <option value="ms">Matric</option>
+                                                                    <option value="id" disabled selected>Status</option>
+                                                                    {{with .DocumentStatus}}
+                                                                        {{range .}}
+                                                                    <option value="{{.Id}}">{{.Name}}</option>
+                                                                    {{end}}
+                                                                            {{end}}
                                                                 </select>
                                                             </div>
+                                                            <input type="hidden" name="documentId" value="{{.Doc.DocumentId}}" >
                                                             <div style="margin-top: 3%" class="col-lg-5">
-                                                                <button type="button" class="btn btn-info ">submit
+                                                                <button  type="submit" class="btn btn-info ">submit
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -146,6 +148,8 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    {{end}}
+                                    {{end}}
                                     </tbody>
                                 </table>
                             </div>
@@ -167,53 +171,55 @@
                                     </div>
                                     <thead>
                                     <th>Name</th>
-                                    <th>Surname</th>
-                                    <th>Address</th>
+                                    <th>LatName</th>
+                                    <th>Email</th>
                                     <th>Education Level</th>
-                                    <th>Application Institution</th>
-                                    <th>Application Course</th>
-                                    <th>Average Marks</th>
-                                    <th>Change Application status</th>
+                                    <th>Institution</th>
+                                    <th>Course</th>
+                                    <th>Status</th>
+                                    <th>Change status</th>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>1</td>
-                                        <td>CTR050</td>
-                                        <td>joseph@gmail.com</td>
-                                        <td>In process</td>
-                                        <td>0625401763</td>
-                                        <td>verify documents</td>
-                                        <td>verify documents</td>
+                                        <td>{{.Application.ApplicantDetails.Name}}</td>
+                                        <td>{{.Application.ApplicantDetails.LatName}}</td>
+                                        <td>{{.Application.ApplicantDetails.Email}}</td>
+                                        <td>{{.Application.ApplicantDetails.ApplicantType}}</td>
+                                        <td>{{.Application.ApplicantDetails.Institution}}</td>
+                                        <td>{{.Application.ApplicantDetails.Course}}</td>
+                                        <td>{{.Application.ApplicationStatus}}</td>
                                         <td >
 
-
                                             <div class="row">
-                                            <form>
+                                            <form method="post" action="/admin/change/application-status">
                                                 <div class="row justify-content-center">
 
                                                         <div class="row">
                                                         <div class="col-md-7">
-                                                            <select name="currentQualification" class="selectpicker"
+                                                            <select name="applicationStatus" class="selectpicker"
                                                                     data-style="btn-default btn-outline"
                                                                     data-menu-style="dropdown-blue">
-                                                                <option value="id" disabled selected>Status
-                                                                </option>
-                                                                <option value="id">Student</option>
-                                                                <option value="ms">Matric</option>
+                                                                <option value="id" disabled selected>Status</option>
+                                                                {{with .Application.ApplicationStatues}}
+                                                                    {{range .}}
+                                                                <option value="{{.Id}}">{{.Name}}</option>
+                                                                {{end}}
+                                                                {{end}}
                                                             </select>
                                                         </div>
+                                                            <input type="hidden" name="applicationId" value="{{.Application.ApplicantDetails.ApplicantionId}}" >
                                                         <div style="margin-top: 3%" class="col-lg-5">
                                                                 <button type="button" class="btn btn-info ">submit
                                                                 </button>
                                                         </div>
                                                         </div>
-
                                                 </div>
                                             </form>
                                             </div>
                                         </td>
 
                                     </tr>
+
 
                                     </tbody>
                                 </table>
@@ -223,10 +229,11 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="contact" action="" method="post">
+                        <form id="contact" action="/admin/email" method="post">
                             <p class="card-category">Send message to: Espoir Diteekemena</p>
+                            <input type="hidden" name="studentEmail" value="espoirditekemena@gmail.com" >
                             <fieldset>
-                                <textarea placeholder="Type your message here...." tabindex="5" required></textarea>
+                                <textarea name="message" placeholder="Type your message here...." tabindex="5" required></textarea>
                             </fieldset>
                             <fieldset>
                                 <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Send

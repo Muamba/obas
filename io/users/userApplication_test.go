@@ -24,7 +24,7 @@ func TestDeleteUserApplication(t *testing.T) {
 	assert.NotNil(t, resp)
 }
 func TestGetUserApplication(t *testing.T) {
-	resp, err := GetUserApplication("0001", "0303445")
+	resp, err := GetUserApplication("espoirditekemena@gmail.com", "EMOR-0KOPY")
 	assert.Nil(t, err)
 	fmt.Println(" The Results", resp)
 	assert.NotNil(t, resp)
@@ -38,4 +38,10 @@ func TestGetUserApplications(t *testing.T) {
 	assert.Nil(t, err)
 	fmt.Println(" The Results", resp)
 	assert.NotNil(t, resp)
+}
+func TestGetUserApplicationWithAppId(t *testing.T) {
+	result, err := GetUserApplicationWithAppId("EMOR-0KOPY")
+	assert.Nil(t, err)
+	fmt.Println(" The Results", result)
+	assert.NotNil(t, result)
 }

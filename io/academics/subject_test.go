@@ -8,14 +8,14 @@ import (
 )
 
 func TestCreateSubject(t *testing.T) {
-	obj := domain.Subject{"0000", "adp3"}
+	obj := domain.Subject{"0000", "adp3", ""}
 	result, err := CreateSubject(obj)
 	assert.Nil(t, err)
 	fmt.Println(" The Results", result)
 	assert.NotNil(t, result)
 }
 func TestDeleteSubject(t *testing.T) {
-	obj := domain.Subject{"0000", "adp3"}
+	obj := domain.Subject{"0000", "adp3", ""}
 	result, err := DeleteSubject(obj)
 	assert.Nil(t, err)
 	fmt.Println(" The Results", result)
@@ -34,7 +34,7 @@ func TestGetSubjects(t *testing.T) {
 	assert.NotNil(t, result)
 }
 func TestUpdateSubject(t *testing.T) {
-	obj := domain.Subject{"0000", "adp3"}
+	obj := domain.Subject{"0000", "adp3", ""}
 	result, err := UpdateSubject(obj)
 	assert.Nil(t, err)
 	fmt.Println(" The Results", result)

@@ -6,7 +6,7 @@ import (
 	domain "obas/domain/users"
 )
 
-const userMatricSubjectURL = api.BASE_URL + "/users/institution/matric/subject"
+const userMatricSubjectURL = api.BASE_URL + "/users/institution/matric/subject/"
 
 func CreateUserMatricSubject(entity domain.UserMatricSubject) (domain.UserMatricSubject, error) {
 	resp, _ := api.Rest().

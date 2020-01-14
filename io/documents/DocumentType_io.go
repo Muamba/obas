@@ -8,13 +8,11 @@ import (
 
 const documentTypeUrl = api.BASE_URL + "/documents"
 
-type DocumentType domain.DocumentType
-
-func GetDocumentTypes() ([]DocumentType, error) {
-	entites := []DocumentType{}
-	//d1 := DocumentType{"1", "Matric"}
-	//d2 := DocumentType{"2", "Identification"}
-	//entites = []DocumentType{d1, d2}
+func GetDocumentTypes() ([]domain.DocumentType, error) {
+	entites := []domain.DocumentType{}
+	//d1 := domain.DocumentType{"1", "Matric"}
+	//d2 := domain.DocumentType{"2", "Identification"}
+	//entites = []domain.DocumentType{d1, d2}
 	resp, _ := api.Rest().Get(documentTypeUrl + "/type/all")
 	if resp.IsError() {
 		return entites, errors.New(resp.Status())
@@ -27,9 +25,14 @@ func GetDocumentTypes() ([]DocumentType, error) {
 	return entites, nil
 }
 
-func GetDocumentType(id string) (DocumentType, error) {
-	entity := DocumentType{}
-	resp, _ := api.Rest().Get(documentTypeUrl + "/type/get/" + id)
+func GetDocumentType(documentTypeId string) (domain.DocumentType, error) {
+	entity := domain.DocumentType{}
+	//if documentTypeId == "1" {
+	//	entity = domain.DocumentType{documentTypeId, "Matric"}
+	//} else if documentTypeId == "2" {
+	//	entity = domain.DocumentType{documentTypeId, "ID"}
+	//}
+	resp, _ := api.Rest().Get(documentTypeUrl + "/type/get/" + documentTypeId)
 	if resp.IsError() {
 		return entity, errors.New(resp.Status())
 	}

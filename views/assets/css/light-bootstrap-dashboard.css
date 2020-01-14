@@ -5285,19 +5285,19 @@ fieldset[disabled] .form-control {
 }
 
 .progress-bar-info {
-    background-color: #23CCEF;
+    background-color: #23CCEF !important;
 }
 
 .progress-bar-success {
-    background-color: #87CB16;
+    background-color: #87CB16 !important;
 }
 
 .progress-bar-warning {
-    background-color: #FFA534;
+    background-color: #FFA534 !important;
 }
 
 .progress-bar-danger {
-    background-color: #FB404B;
+    background-color: #FB404B !important;
 }
 
 /*!
