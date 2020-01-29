@@ -1,0 +1,53 @@
+{{define "applicant-list"}}
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+                <a data-target="#applicantsList" href="#" data-toggle="collapse" class="collapsed"
+                   aria-expanded="false">
+                    Documents Table
+                    <b class="caret"></b>
+                </a>
+            </h4>
+        </div>
+
+        <div id="applicantsList" class="card-collapse collapse">
+            <div class="card-body beautify">
+                <!-- here-->
+                <!--Table head-->
+                <thead>
+                <th>Applicant Email</th>
+                <th>Application Date</th>
+                <th>Application Status</th>
+                <th>Modifier</th>
+                <th>Date of Modification</th>
+                <th>View</th>
+                </thead>
+                <!--Table head-->
+
+                <!--Table body-->
+                <tbody>
+                {{with .Applicant}}
+                    {{range .}}
+                        <tr>
+
+                            <td>{{.Email}}</td>
+                            <td>{{.DateTime}}</td>
+                            <td>{{.Stat}}</td>
+                            <td>{{.ApplicationStat.ModifiedBy}}</td>
+                            <td>{{.ApplicationStat.DateTime}}</td>
+                            <td>
+                                <a href="/admin/applicant/application/{{.ApplicantionId}}/{{.Email}}">verify
+                                    documents</a></td>
+                        </tr>
+                    {{end}}
+                {{end}}
+
+                </tbody>
+
+            </div>
+        </div>
+
+    </div>
+
+{{end}}

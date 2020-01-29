@@ -10120,7 +10120,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
     display: block;
     position: absolute;
     color: #518607;
-    border: 0px solid white;
+    border: 0px solid grey;
     border-radius: 14px;
     box-shadow: 0 0 3px #444;
     box-sizing: content-box;
@@ -10128,7 +10128,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
     font-family: 'Courier New', Courier, monospace;
     line-height: 18px;
     content: '+';
-    background-color: #FFF;
+    background-color: #9A9A9A;
 }
 
 table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before,
@@ -10174,7 +10174,7 @@ table.dataTable.dtr-column > tbody > tr > th.control:before {
     display: block;
     position: absolute;
     color: white;
-    border: 2px solid white;
+    border: 2px solid grey;
     border-radius: 14px;
     box-shadow: 0 0 3px #444;
     box-sizing: content-box;

@@ -442,6 +442,10 @@ func AdminApplicantHandler(app *config.Env) http.HandlerFunc {
 			app.Path + "content/admin/template/sidebar.template.html",
 			app.Path + "content/admin/template/navbar.template.html",
 			app.Path + "base/template/footer.template.html",
+			app.Path + "content/admin/template/applicant/applicant-list-form.template.html",
+			app.Path + "content/admin/template/applicant/student-details-table.html",
+			app.Path + "content/admin/template/applicant/student-document-table.template.html",
+			app.Path + "content/admin/template/applicant/student-message.template.html",
 		}
 		ts, err := template.ParseFiles(files...)
 		if err != nil {

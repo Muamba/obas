@@ -6,7 +6,7 @@ import (
 )
 
 //const BASE_URL string = "https://ict.cput.ac.za/obasapi"
-const BASE_URL string = "http://155.238.30.133:9000"
+const BASE_URL string = "http://155.238.32.219:9000"
 
 func Rest() *resty.Request {
 	return resty.R().SetAuthToken("").

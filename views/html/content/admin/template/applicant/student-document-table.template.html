@@ -1,0 +1,92 @@
+{{define "student-document"}}
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+                <a data-target="#applicantsInfo" href="#" data-toggle="collapse" class="collapsed"
+                   aria-expanded="false">
+                    Applicants
+                    <b class="caret"></b>
+                </a>
+            </h4>
+        </div>
+
+        <div id="applicantTypeInfo" class="card-collapse collapse">
+            <div class="card-body beautify">
+                <!-- here-->
+                <thead>
+                <tr>
+                    <th>Document Type</th>
+                    <th class="text-center">Document</th>
+                    <th class="text-center">file Document</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Change Document Stat</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{with .Document}}
+                    {{range .}}
+                        <tr>
+                            <td class="text-center">{{.DocumentType}}</td>
+                            <td class="td-actions text-center">
+                                <a href="" rel="tooltip" title="View Profile" class="fa fa-image"
+                                   onclick="myShowSwal({{.Doc.Url}})"></a>
+                            </td>
+                            <td>
+                                <div class="font-icon-detail text-center">
+                                    <a download="logo" href="{{.Doc.Url}}"><i
+                                                class="nc-icon nc-cloud-download-93">
+                                        </i></a>
+                                </div>
+                            </td>
+                            <td class="text-center"><a class="edit nav-link" title="View Document stat details" href=""
+                                                       data-toggle="modal" data-target="#documentStatModal"
+                                                       onclick="GetDocumentStat({{.DocumentStatu}})">{{.Stat}}</a>
+                            </td>
+                            <td>
+                                <div class="row justify-content-center">
+                                    <form method="post" action="/admin/change/document-status">
+
+                                        <div class=" col-md-12 justify-content-center">
+                                            <input class="form-control" type="text" name="comment"
+                                                   placeholder="Comment">
+                                        </div>
+                                        <div class="row justify-content-center">
+
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <select name="documentStatusId" class="selectpicker"
+                                                            data-title="Example: 3"
+                                                            data-style="btn-default btn-outline"
+                                                            data-menu-style="dropdown-blue">
+                                                        <option value="id" disabled selected>Status</option>
+                                                        {{with .DocumentStatus}}
+                                                            {{range .}}
+                                                                <option value="{{.Id}}">{{.Name}}</option>
+                                                            {{end}}
+                                                        {{end}}
+                                                    </select>
+                                                </div>
+                                                <input type="hidden" name="documentId" value="{{.Doc.DocumentId}}">
+                                                <input type="hidden" name="UserId" value="{{.UserId}}">
+                                                <input type="hidden" name="applicationId" value="{{.ApplicationId}}">
+
+                                                <div style="margin-top: 3%" class="col-lg-5">
+                                                    <button type="submit" class="btn btn-info ">submit
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {{end}}
+                {{end}}
+                </tbody>
+
+            </div>
+        </div>
+    </div>
+{{end}}

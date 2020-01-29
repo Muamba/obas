@@ -1,0 +1,43 @@
+{{define "student-message"}}
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+                <a data-target="#student-messages" href="#" data-toggle="collapse" class="collapsed"
+                   aria-expanded="false">
+                    Messages
+                    <b class="caret"></b>
+                </a>
+            </h4>
+        </div>
+
+        <div id="student-messages" class="card-collapse collapse">
+            <div class="card-body beautify">
+                <!-- here-->
+                <!-- Card body -->
+                <div id="collapse81" class="collapse" role="tabpanel" aria-labelledby="heading"
+                     data-parent="#accordionEx78">
+                    <div class="card-body">
+                        <form id="contact" action="/admin/email" method="post">
+                            <p class="card-category">Send message to: Espoir Diteekemena</p>
+                            <input type="hidden" name="studentEmail" value="espoirditekemena@gmail.com">
+                            <fieldset>
+                                <textarea name="message" placeholder="Type your message here...." tabindex="5"
+                                          required></textarea>
+                            </fieldset>
+                            <fieldset>
+                                <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Send
+                                </button>
+                            </fieldset>
+
+                        </form>
+                        <!-- Table responsive wrapper -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+{{end}}

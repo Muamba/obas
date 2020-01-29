@@ -1,0 +1,82 @@
+{{define "student-details"}}
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+                <a data-target="#applicantsInfo" href="#" data-toggle="collapse" class="collapsed"
+                   aria-expanded="false">
+                    Application details Table
+                    <b class="caret"></b>
+                </a>
+            </h4>
+        </div>
+
+        <div id="applicantTypeInfo" class="card-collapse collapse">
+            <div class="card-body beautify">
+                <!-- here-->
+                <!--Table head-->
+                <thead>
+                <th>Name</th>
+                <th>LatName</th>
+                <th>Email</th>
+                <th>Education Level</th>
+                <th>Institution</th>
+                <th>Course</th>
+                <th>Status</th>
+                <th>Change status</th>
+                </thead>
+                <!--Table head-->
+
+                <!--Table body-->
+                <tbody>
+                <tr>
+                    <td>{{.Application.ApplicantDetails.Name}}</td>
+                    <td>{{.Application.ApplicantDetails.LatName}}</td>
+                    <td>{{.Application.ApplicantDetails.Email}}</td>
+                    <td>{{.Application.ApplicantDetails.ApplicantType}}</td>
+                    <td>{{.Application.ApplicantDetails.Institution}}</td>
+                    <td>{{.Application.ApplicantDetails.Course}}</td>
+                    <td>{{.Application.ApplicationStatus}}</td>
+                    <td>
+
+                        <div class="row">
+                            <form method="post" action="/admin/change/application-status">
+                                <div class="row justify-content-center">
+
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <select name="applicationStatus" class="selectpicker"
+                                                    data-style="btn-default btn-outline"
+                                                    data-menu-style="dropdown-blue">
+                                                <option value="id" disabled selected>Status
+                                                </option>
+                                                {{with .Application.ApplicationStatues}}
+                                                    {{range .}}
+                                                        <option value="{{.Id}}">{{.Name}}</option>
+                                                    {{end}}
+                                                {{end}}
+                                            </select>
+                                        </div>
+                                        <input type="hidden" name="applicationId"
+                                               value="{{.Application.ApplicantDetails.ApplicantionId}}">
+                                        <div style="margin-top: 3%" class="col-lg-5">
+                                            <button type="button" class="btn btn-info ">submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </td>
+
+                </tr>
+
+
+                </tbody>
+                <!--Table body-->
+
+            </div>
+        </div>
+
+    </div>
+{{end}}
